@@ -29,6 +29,7 @@ const projectSlice = createSlice({
         (state.status = "success"), (state.projects = action.payload);
       })
       .addCase(fetchProjects.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message;
       });
   },

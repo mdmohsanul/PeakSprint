@@ -9,9 +9,10 @@ const Dashboard_Page = () => {
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
+
   return (
     <>
-      <div className="md:ml-64 max-w-5xl mx-auto p-8">
+      <div className="md:ml-64 max-w-5xl mx-auto md:p-8 p-4">
         <Project_Section />
         <h1>dlcmdlcmdlcmd</h1>
       </div>

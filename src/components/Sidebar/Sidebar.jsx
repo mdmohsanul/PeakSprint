@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="max-w-screen md:max-w-64 bg-gray-300 md:min-h-screen h-14 fixed top-0 left-0 w-full">
+      <div className="max-w-screen md:max-w-64 bg-gray-300 md:min-h-screen h-14 fixed top-0 left-0 w-full z-10">
         <div className="">
           <div
             className="flex items-center h-14 justify-between md:justify-center mx-4 md:mx-0 "
