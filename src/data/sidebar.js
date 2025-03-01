@@ -27,7 +27,7 @@ export const sidebarList = [
     id: 4,
     name: "Report",
     linkIcon: BsBarChart,
-    linkTo: "/report",
+    linkTo: "/dashboard/report",
   },
   {
     id: 5,

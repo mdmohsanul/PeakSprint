@@ -9,6 +9,8 @@ import Task_Page from "./pages/Task_Page";
 import PrivateRoute from "./components/ProtectedRoute";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header";
+import Dashboard_Layout from "./pages/Dashboard_Layout";
+import Report_Page from "./pages/Report_Page";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,14 +19,11 @@ function App() {
   useEffect(() => {
     console.log("inside effect ", token);
     if (token) {
-      console.log("ifblock");
       dispatch(fetchUser(token));
     }
   }, [dispatch, token]);
   return (
     <>
-      <Sidebar />
-      <Header />
       <Outlet />
     </>
   );
@@ -37,23 +36,29 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Dashboard_Page />,
+        element: <Log_In_Page />, // No Sidebar or Header
       },
       {
         path: "/signup",
-        element: <Sign_Up_Page />,
+        element: <Sign_Up_Page />, // No Sidebar or Header
       },
       {
-        path: "/login",
-        element: <Log_In_Page />,
-      },
-      {
-        path: "/team",
+        path: "/dashboard",
         element: (
           <PrivateRoute>
-            <Task_Page />
+            <Dashboard_Layout /> {/* Wrap protected routes */}
           </PrivateRoute>
         ),
+        children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard_Page />,
+          },
+          {
+            path: "/dashboard/report",
+            element: <Report_Page />,
+          },
+        ],
       },
     ],
   },

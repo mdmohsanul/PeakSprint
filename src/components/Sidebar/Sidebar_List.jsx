@@ -15,7 +15,7 @@ const Sidebar_List = ({ setNav }) => {
                 setActiveStatus(item.name);
                 setNav(false);
               }}
-              className={`flex items-center justify-start gap-4 py-2 text-xl   transition-colors duration-300 
+              className={`flex items-center justify-start gap-4 py-2 text-lg   transition-colors duration-300 
             ${activeStatus === item.name && "text-blue-700"} `}
             >
               <span>{<item.linkIcon />}</span>

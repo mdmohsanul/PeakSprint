@@ -15,7 +15,7 @@ const Log_In_Page = () => {
   });
   useEffect(() => {
     if (token) {
-      navigate("/task");
+      navigate("/dashboard");
     }
   }, []);
 
@@ -38,7 +38,7 @@ const Log_In_Page = () => {
 
     if (data.token) {
       dispatch(loginSuccess(data)); // Save user & token in Redux
-      navigate("/task");
+      navigate("/dashboard");
     }
   };
   return (
