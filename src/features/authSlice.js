@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import { API_BASE_URL } from "../utils/Constants";
 
 // Fetch user details with token
 export const fetchUser = createAsyncThunk(
@@ -8,16 +10,13 @@ export const fetchUser = createAsyncThunk(
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found");
 
-      const response = await fetch(
-        "https://peak-sprint-backend.vercel.app/auth/admin/data",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`${API_BASE_URL}/auth/admin/data`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) throw new Error("Failed to fetch user data");
 
@@ -27,12 +26,36 @@ export const fetchUser = createAsyncThunk(
     }
   }
 );
+export const loggedInUser = createAsyncThunk(
+  "user/loggedInUser",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { email, password } = data;
+      const response = await axios.post(
+        `https://peak-sprint-backend.vercel.app/auth/login`,
+        { email, password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      localStorage.setItem("user", JSON.stringify(response.data.loginUser));
+      localStorage.setItem("token", response.data.token);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Login Error:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
     token: localStorage.getItem("token") || null,
-    loading: false,
+    status: "",
     error: null,
   },
   reducers: {
@@ -52,16 +75,29 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchUser.pending, (state) => {
-        state.loading = true;
+        state.status = "loading";
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.loading = false;
+        state.status = "Success";
       })
       .addCase(fetchUser.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      });
+        state.error = action.error.message;
+        state.status = "failed";
+      }),
+      builder
+        .addCase(loggedInUser.pending, (state) => {
+          state.status = "loading";
+        })
+        .addCase(loggedInUser.fulfilled, (state, action) => {
+          state.user = action.payload.loginUser; // Save user details
+          state.token = action.payload.token; // Save token
+          state.status = "Success";
+        })
+        .addCase(loggedInUser.rejected, (state, action) => {
+          state.error = action.error.message;
+          state.status = "failed";
+        });
   },
 });
 

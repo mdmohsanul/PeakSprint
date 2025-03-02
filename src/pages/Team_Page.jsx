@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Add_Project_Form from "../components/Dashboard/Add_Project_Form";
+
 import Add_Team_Form from "../components/Team/Add_Team_Form";
 import Team_Card from "../components/Team/Team_Card";
 import { fetchTeams } from "../features/teamSlice";
@@ -35,7 +35,7 @@ const Team_Page = () => {
         </div>
         <div className="grid md:grid-cols-3 grid-cols-1 gap-8 mt-8 place-items-center">
           {teams?.map((item) => (
-            <Team_Card data={item} />
+            <Team_Card data={item} key={item._id} />
           ))}
         </div>
         {openModal && (

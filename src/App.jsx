@@ -12,6 +12,7 @@ import Header from "./components/Header";
 import Dashboard_Layout from "./pages/Dashboard_Layout";
 import Report_Page from "./pages/Report_Page";
 import Team_Page from "./pages/Team_Page";
+import Team_Details_Page from "./pages/Team_Details_Page";
 
 function App() {
   const dispatch = useDispatch();
@@ -62,6 +63,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/dashboard/teams",
             element: <Team_Page />,
+          },
+          {
+            path: "/dashboard/team/details/:teamId",
+            element: <Team_Details_Page />,
           },
         ],
       },

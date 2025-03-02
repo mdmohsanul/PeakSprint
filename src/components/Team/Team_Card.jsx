@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Team_Card = ({ data }) => {
   const member = data?.members?.map((item) => {
@@ -19,8 +20,8 @@ const Team_Card = ({ data }) => {
   };
   return (
     <>
-      <div className="w-72 h-32 bg-gray-200 rounded-md p-5">
-        <div className="">
+      <div className="w-72 h-32 bg-gray-200 rounded-md p-5 cursor-pointer hover:bg-gray-300 transition-colors duration-300">
+        <Link to={`/dashboard/team/details/${data._id}`}>
           <p className="font-medium truncate text-gray-700">{data.name}</p>
           <div className="pl-5 pt-3">
             {memberCount.map((item, i) => (
@@ -31,7 +32,7 @@ const Team_Card = ({ data }) => {
               </button>
             ))}
           </div>
-        </div>
+        </Link>
       </div>
     </>
   );
