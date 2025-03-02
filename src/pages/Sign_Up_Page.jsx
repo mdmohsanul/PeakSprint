@@ -1,30 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { IoEyeOutline } from "react-icons/io5";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../features/authSignUpSlice";
+
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Sign_Up_Page = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [password, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const changeHandler = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const { token } = useSelector((state) => state.auth);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
+  const onSubmit = (data) => {
+    dispatch(signupUser(data));
   };
-  const submitHandler = async (e) => {
-    const response = await fetch("http://localhost:5000/auth/signup", {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await response.json();
-    console.log(data);
-  };
+  console.log(watch("email")); // watch input value by passing the name of it
   return (
     <>
       <section className="w-full md:pl-64 bg-gray-50 dark:bg-gray-900">
@@ -37,9 +43,9 @@ const Sign_Up_Page = () => {
               <form
                 className="space-y-4 md:space-y-6"
                 action="#"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit(onSubmit)}
               >
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -47,17 +53,29 @@ const Sign_Up_Page = () => {
                     Your email
                   </label>
                   <input
-                    type="email"
                     name="email"
                     id="email"
-                    value={formData.email}
-                    onChange={changeHandler}
+                    autoComplete="off"
+                    {...register("email", {
+                      required: "Email address is required",
+                      pattern: {
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "Enter a valid email",
+                      },
+                    })}
+                    aria-invalid={errors.email ? "true" : "false"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
-                    required=""
                   />
+                  {errors.email && (
+                    <div className="text-red-700 relative rounded-md text-sm bg-gray-200 p-2 mt-1 w-1/2">
+                      <div className="w-5 h-5 bg-gray-200  inline-block  rotate-45 absolute -top-2 left-4"></div>
+                      <span>{errors.email.message}</span>
+                    </div>
+                  )}
                 </div>
-                <div>
+                <div className="relative">
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -68,12 +86,26 @@ const Sign_Up_Page = () => {
                     type="text"
                     name="name"
                     id="name"
-                    value={formData.name}
-                    onChange={changeHandler}
+                    autoComplete="off"
+                    {...register("name", {
+                      required: true,
+                      maxLength: 20,
+                      minLength: 3,
+                    })}
+                    aria-invalid={errors.name ? "true" : "false"}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Bob Johnson"
-                    required=""
                   />
+                  {errors.name && (
+                    <div className="text-red-700 relative rounded-md text-sm bg-gray-200 p-2 mt-1 w-1/2">
+                      <div className="w-5 h-5 bg-gray-200  inline-block  rotate-45 absolute -top-2 left-4"></div>
+                      <span>
+                        <p>4 to 24 character.</p>
+                        <p> Must begin with a letter.</p>
+                        <p>Letters, numbers, underscores, hyphens allowed.</p>
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label
@@ -88,11 +120,28 @@ const Sign_Up_Page = () => {
                       name="password"
                       id="password"
                       placeholder="••••••••"
-                      value={formData.password}
-                      onChange={changeHandler}
+                      {...register("password", {
+                        required: "Password is required",
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,20}$/,
+                          message: "Enter a valid email",
+                        },
+                      })}
+                      aria-invalid={errors.password ? "true" : "false"}
                       className="bg-gray-50 border   border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required=""
                     />
+                    {errors.password && (
+                      <div className="text-red-700 relative rounded-md text-sm bg-gray-200 p-2 mt-1 w-1/2">
+                        <div className="w-5 h-5 bg-gray-200  inline-block  rotate-45 absolute -top-2 left-4"></div>
+                        <span>
+                          <p> 6 to 20 characters.</p>
+                          <p> A-Z, a-z </p>
+                          <p>0-9 </p>
+                        </span>
+                      </div>
+                    )}
                     <button
                       className="absolute top-3 right-5"
                       onClick={(e) => {
@@ -147,7 +196,6 @@ const Sign_Up_Page = () => {
                 </div>
                 <button
                   type="submit"
-                  onClick={submitHandler}
                   className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Create an account

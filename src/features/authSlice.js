@@ -7,15 +7,18 @@ export const fetchUser = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found");
-      console.log("🚀 Token Sent:", token);
-      const response = await fetch("http://localhost:5000/auth/admin/data", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(response);
+
+      const response = await fetch(
+        "https://peak-sprint-backend.vercel.app/auth/admin/data",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (!response.ok) throw new Error("Failed to fetch user data");
 
       return await response.json();

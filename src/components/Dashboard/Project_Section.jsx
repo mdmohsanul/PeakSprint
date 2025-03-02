@@ -74,7 +74,7 @@ const Project_Section = () => {
         </div>
 
         {openModal && (
-          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xs bg-black/50">
+          <div className="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-xs bg-black/50">
             <Add_Project_Form setOpenModal={setOpenModal} />
           </div>
         )}

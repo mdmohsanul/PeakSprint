@@ -11,6 +11,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header";
 import Dashboard_Layout from "./pages/Dashboard_Layout";
 import Report_Page from "./pages/Report_Page";
+import Team_Page from "./pages/Team_Page";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +58,10 @@ const appRouter = createBrowserRouter([
           {
             path: "/dashboard/report",
             element: <Report_Page />,
+          },
+          {
+            path: "/dashboard/teams",
+            element: <Team_Page />,
           },
         ],
       },

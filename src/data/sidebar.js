@@ -9,19 +9,19 @@ export const sidebarList = [
     id: 1,
     name: "Dashboard",
     linkIcon: RxDashboard,
-    linkTo: "/",
+    linkTo: "/dashboard",
   },
   {
     id: 2,
     name: "Project",
     linkIcon: GoProjectSymlink,
-    linkTo: "",
+    linkTo: "/dashboard/project",
   },
   {
     id: 3,
     name: "Team",
     linkIcon: HiOutlineUserGroup,
-    linkTo: "/team",
+    linkTo: "/dashboard/teams",
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const sidebarList = [
     id: 5,
     name: "Settings",
     linkIcon: IoSettingsOutline,
-    linkTo: "/settings",
+    linkTo: "/dashboard/settings",
   },
   {
     id: 6,
@@ -45,6 +45,6 @@ export const sidebarList = [
     id: 7,
     name: "Log In",
     linkIcon: IoSettingsOutline,
-    linkTo: "/login",
+    linkTo: "/",
   },
 ];

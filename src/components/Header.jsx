@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { CiSearch } from "react-icons/ci";
 import { FaUser } from "react-icons/fa6";
 import { Link } from "react-router";
+import { logout } from "../utils/auth";
 
 const Header = () => {
   const { user } = useSelector((state) => state.auth);
@@ -13,11 +14,11 @@ const Header = () => {
   };
   return (
     <>
-      <div className="w-full md:pl-64 fixed top-0 bg-white shadow-[1px_1px_20px_10px_#00000024]">
-        <div className=" h-14 mt-14 md:mt-0  max-w-4xl  mx-auto z-20 ">
+      <div className="w-full md:ml-64 fixed top-14 md:top-0 h-14   bg-white   shadow-[1px_1px_20px_10px_#00000024]">
+        <div className="max-w-4xl md:pl-12 pl-5">
           <div className="flex items-center justify-between py-1">
             {/* Search bar */}
-            <div className="hidden md:flex relative w-56">
+            <div className=" relative md:w-56 w-44">
               <div className="absolute end-0 inset-y-0 flex items-center ps-3 pointer-events-none">
                 <CiSearch className="text-slate-500 font-semibold" size={20} />
               </div>
@@ -27,12 +28,12 @@ const Header = () => {
                 value={searchTerm}
                 onChange={(e) => handleInputChange(e.target.value)}
                 placeholder={`Search`}
-                className="py-2 pr-5  hover:outline-none outline-none  border-b border-slate-600"
+                className="py-2 md:pr-5 w-full hover:outline-none outline-none  border-b border-slate-600"
               />
             </div>
             {/* User Profile */}
-            <div className="pt-2 relative group flex items-center justify-center gap-4 cursor-pointer">
-              <p className="text-gray-800 group-hover:text-gray-600 transition-colors duration-300">
+            <div className="pt-2 relative group flex items-center justify-center gap-4 cursor-pointer mx-7 md:mx-0">
+              <p className="text-gray-800 hidden md:block group-hover:text-gray-600 transition-colors duration-300">
                 {user?.name}
               </p>
               <div className=" ">
@@ -47,14 +48,15 @@ const Header = () => {
                     Profile
                   </Link>
                   <div className="block px-4 py-2 hover:bg-gray-200">
-                    <button>Logout</button>
+                    {/* remove token and navigate to login page */}
+                    <button onClick={logout}>Logout</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>{" "}
-      </div>
+        </div>
+      </div>{" "}
     </>
   );
 };

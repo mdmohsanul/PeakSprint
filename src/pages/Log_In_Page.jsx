@@ -28,11 +28,14 @@ const Log_In_Page = () => {
     if (!loginData.email || !loginData.password) {
       setErr("Missing required filed");
     }
-    const response = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      body: JSON.stringify(loginData), // Sending email & password
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      "https://peak-sprint-backend.vercel.app/auth/login",
+      {
+        method: "POST",
+        body: JSON.stringify(loginData), // Sending email & password
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     const data = await response.json();
 
