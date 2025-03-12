@@ -18,6 +18,34 @@ export const fetchTeams = createAsyncThunk(
   }
 );
 
+export const addTeamMember = createAsyncThunk(
+  "team/addTeamMember",
+  async (data, { rejectWithValue }) => {
+    try {
+      const { id, ...rest } = data;
+      const response = await axios.post(`${API_BASE_URL}/team/${id}`, rest);
+      if (response.status !== 200) throw new Error("Failed to add member");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+export const addTeam = createAsyncThunk(
+  "team/addTeam",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/team/`, data);
+      if (response.status !== 200) throw new Error("Failed to add member");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    }
+  }
+);
+
 const teamSlice = createSlice({
   name: "team",
   initialState: {
@@ -38,7 +66,24 @@ const teamSlice = createSlice({
       .addCase(fetchTeams.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      }),
+      builders
+        .addCase(addTeamMember.fulfilled, (state, action) => {
+          state.teams.members.push(action.payload);
+        })
+        .addCase(addTeamMember.rejected, (state, action) => {
+          state.status = "failed";
+          state.error = action.error.message;
+        }),
+      builders
+        .addCase(addTeam.fulfilled, (state, action) => {
+          console.log(action.payload);
+          state.teams.push(action.payload);
+        })
+        .addCase(addTeam.rejected, (state, action) => {
+          state.status = "failed";
+          state.error = action.error.message;
+        });
   },
 });
 

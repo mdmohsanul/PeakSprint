@@ -7,20 +7,20 @@ import Log_In_Page from "./pages/Log_In_Page";
 import Sign_Up_Page from "./pages/Sign_Up_Page";
 import Task_Page from "./pages/Task_Page";
 import PrivateRoute from "./components/ProtectedRoute";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Header from "./components/Header";
 import Dashboard_Layout from "./pages/Dashboard_Layout";
 import Report_Page from "./pages/Report_Page";
 import Team_Page from "./pages/Team_Page";
 import Team_Details_Page from "./pages/Team_Details_Page";
+import Project_Page from "./pages/Project_Page";
+import Project_Detail_Page from "./pages/Project_Detail_Page";
 
 function App() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    console.log("inside effect ", token);
     if (token) {
+      console.log("app");
       dispatch(fetchUser(token));
     }
   }, [dispatch, token]);
@@ -67,6 +67,14 @@ const appRouter = createBrowserRouter([
           {
             path: "/dashboard/team/details/:teamId",
             element: <Team_Details_Page />,
+          },
+          {
+            path: "/dashboard/projects",
+            element: <Project_Page />,
+          },
+          {
+            path: "/dashboard/projects/:projectId",
+            element: <Project_Detail_Page />,
           },
         ],
       },

@@ -8,9 +8,9 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="max-w-screen md:max-w-64 bg-gray-300 md:min-h-screen h-14 fixed top-0 left-0 w-full z-10 ">
+      <div className="w-full md:max-w-64 bg-white  md:border-r-2 md:border-red-500 md:min-h-screen h-14  fixed top-0 left-0 z-10 ">
         <div className="">
-          <div className="flex items-center h-14 justify-between md:justify-center mx-4 md:mx-0 ">
+          <div className="flex items-center  bg-white h-14 justify-between md:justify-center mx-4 md:mx-0 ">
             <button
               className="md:hidden cursor-pointer text-3xl"
               onClick={() => setNav(!nav)}
@@ -19,7 +19,7 @@ const Sidebar = () => {
             </button>
 
             <Link to="/dashboard">
-              <h1 className="text-2xl md:text-3xl font-bold cursor-pointer">
+              <h1 className="text-2xl md:text-3xl font-bold cursor-pointer md:mt-4 text-blue-700">
                 PeakSprint
               </h1>
             </Link>

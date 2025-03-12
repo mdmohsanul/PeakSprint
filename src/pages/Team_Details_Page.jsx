@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
-import { useSelector } from "react-redux";
-import Add_Team_Form from "../components/Team/Add_Team_Form";
+import { useDispatch, useSelector } from "react-redux";
 import Add_Member_Form from "../components/Team/Add_Member_Form";
+import { fetchTeams } from "../features/teamSlice";
 
 const Team_Details_Page = () => {
   const { teamId } = useParams();
+  const dispatch = useDispatch();
   const { teams, status, error } = useSelector((state) => state.teams);
-  const { users } = useSelector((state) => state.users);
   const [openModal, setOpenModal] = useState(false);
   const findTeam = teams?.find((item) => item._id === teamId);
+  console.log(findTeam);
   const getName = (value, idx) => {
     const valueArr = value.split(" ");
     const char =
@@ -22,6 +23,10 @@ const Team_Details_Page = () => {
       2: "bg-red-500 text-red-100",
       3: "bg-gray-600 text-gray-100",
     };
+    useEffect(() => {
+      console.log("rednder on form submit");
+      dispatch(fetchTeams());
+    }, []);
     return (
       <span
         className={`${classes[idx]}  p-2 w-10 h-10 rounded-full flex items-center justify-center`}
@@ -43,11 +48,12 @@ const Team_Details_Page = () => {
           <h1 className="text-2xl text-gray-800 font-semibold ">
             {findTeam?.name}
           </h1>
+          <p>{findTeam?.description}</p>
           <div className="pt-5 ">
             <h2 className="text-xl text-gray-500">Members</h2>
             <div className="flex gap-5 flex-col pt-4">
               {findTeam?.members.map((item, i) => (
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-5" key={item._id}>
                   {getName(item.name, i)}
 
                   <span>{item.name}</span>
@@ -64,7 +70,10 @@ const Team_Details_Page = () => {
         </div>
         {openModal && (
           <div className="fixed inset-0 z-20 flex items-center justify-center backdrop-blur-xs bg-black/50">
-            <Add_Member_Form setOpenModal={setOpenModal} />
+            <Add_Member_Form
+              setOpenModal={setOpenModal}
+              teamId={findTeam?._id}
+            />
           </div>
         )}
       </div>

@@ -18,7 +18,7 @@ const Team_Page = () => {
   useEffect(() => {
     dispatch(fetchTeams());
     dispatch(fetchUsers());
-  }, [dispatch]);
+  }, []);
   if (status === "loading") return <p>Loading....</p>;
   if (status === "failed") return <p>Error: {error}</p>;
   return (

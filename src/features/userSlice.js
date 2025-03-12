@@ -8,7 +8,6 @@ export const fetchUsers = createAsyncThunk(
       const response = await axios.get(
         "https://peak-sprint-backend.vercel.app/auth/users",
         {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },

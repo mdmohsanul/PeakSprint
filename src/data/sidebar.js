@@ -15,7 +15,7 @@ export const sidebarList = [
     id: 2,
     name: "Project",
     linkIcon: GoProjectSymlink,
-    linkTo: "/dashboard/project",
+    linkTo: "/dashboard/projects",
   },
   {
     id: 3,

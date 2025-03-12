@@ -1,24 +1,24 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { statusOptions } from "../../data/dashboard";
-import Project_List from "../Project/Project_List";
-import Add_Project_Btn from "../Project/Add_Project_Btn";
+import { fetchTask } from "../../features/taskSlice";
+import Add_Task_Btn from "../Task/Add_Task_Btn";
+import Task_Card from "../Task/Task_Card";
 
-const Project_Section = () => {
-  const { projects, status, error } = useSelector((state) => state.projects);
-
-  const showProject = projects.slice(0, 3);
-
-  if (status === "loading") return <p>Loading......</p>;
-  if (status === "failed") return <p>Error: {error}</p>;
+const Task_Section = () => {
+  const dispatch = useDispatch();
+  const { tasks, status, error } = useSelector((state) => state.tasks);
+  console.log(tasks);
+  useEffect(() => {
+    dispatch(fetchTask());
+  }, [dispatch]);
   return (
     <>
-      <div className="mb-10">
+      <div>
         <div className={`grid grid-cols-3 md:grid-cols-12 grid-rows-1`}>
           <span className="flex flex-col md:flex-row justify-between md:col-span-4 col-span-1">
             <h1 className="text-3xl text-gray-800 font-semibold inline-block md:pr-10 pb-5 md:pb-0 ">
-              Projects
+              My Tasks
             </h1>
             <label htmlFor="projectFilter" className="">
               <select
@@ -39,22 +39,17 @@ const Project_Section = () => {
           </span>
           <span className="md:col-span-6 col-span-1"></span>
           <div className="md:col-span-2 col-span-1">
-            <Add_Project_Btn />
+            <Add_Task_Btn />
           </div>
         </div>
-        <Project_List projectList={showProject} />
-        {/* Projects page  link */}
-        <div className="flex items-center justify-center">
-          <Link
-            to="/dashboard/projects"
-            className="px-5 py-2 bg-blue-600 text-white cursor-pointer rounded-md hover:bg-blue-800 transition-colors duration-300"
-          >
-            More Projects
-          </Link>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 my-5  place-self-center">
+          {tasks?.map((item) => (
+            <Task_Card data={item} key={item._id} />
+          ))}
         </div>
       </div>
     </>
   );
 };
 
-export default Project_Section;
+export default Task_Section;

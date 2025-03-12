@@ -7,8 +7,10 @@ const Dashboard_Layout = () => {
     <div className=" relative">
       <Sidebar /> {/* Sidebar always visible */}
       <div className="relative">
-        <Header /> {/* Header always visible */}
-        <Outlet /> {/* Child routes (Dashboard, Team, etc.) will render here */}
+        {/* Header always visible */}
+        <Header />
+        {/* Child routes (Dashboard, Team, etc.) will render here */}
+        <Outlet />
       </div>
     </div>
   );

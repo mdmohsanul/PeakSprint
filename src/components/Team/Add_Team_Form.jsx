@@ -1,13 +1,24 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
+import { addTeam } from "../../features/teamSlice";
 
 const Add_Team_Form = ({ setOpenModal }) => {
+  const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
-  console.log(users);
 
+  const nameRef = useRef("");
+  console.log("render");
+  const descriptionRef = useRef("");
+  const memberRef = useRef("");
   const submitHandler = (e) => {
     e.preventDefault();
+    const data = {
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      members: [memberRef.current.value],
+    };
+    dispatch(addTeam(data));
   };
   return (
     <>
@@ -21,12 +32,14 @@ const Add_Team_Form = ({ setOpenModal }) => {
             <RxCross2 />
           </button>
         </div>
+
         <form onSubmit={submitHandler}>
           <div className="pb-4">
             <label htmlFor="name" className="block pb-2">
               Team Name:
             </label>
             <input
+              ref={nameRef}
               type="text"
               name="name"
               id="name"
@@ -40,6 +53,7 @@ const Add_Team_Form = ({ setOpenModal }) => {
               Team Description:
             </label>
             <textarea
+              ref={descriptionRef}
               name="description"
               id="description"
               cols="30"
@@ -55,6 +69,7 @@ const Add_Team_Form = ({ setOpenModal }) => {
             <select
               name="status"
               id="status"
+              ref={memberRef}
               className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
             >
               <option value="">Select Member</option>

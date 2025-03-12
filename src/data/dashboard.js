@@ -1,18 +1,60 @@
 export const statusOptions = [
   {
     id: 1,
-    option: "Not Started",
+    name: "To Do",
   },
   {
     id: 2,
-    option: "In Progress",
+    name: "In Progress",
   },
   {
     id: 3,
-    option: "Completed",
+    name: "Completed",
   },
   {
     id: 4,
-    option: "On Hold",
+    name: "Blocked",
+  },
+];
+
+export const tagOptions = [
+  {
+    id: 1,
+    name: "Feature",
+  },
+  {
+    id: 2,
+    name: "Research",
+  },
+  {
+    id: 3,
+    name: "Urgent",
+  },
+  {
+    id: 4,
+    name: "Bug",
+  },
+  {
+    id: 5,
+    name: "Refactor",
+  },
+  {
+    id: 6,
+    name: "Review",
+  },
+];
+
+export const priorityOptions = [
+  {
+    id: 1,
+    name: "High",
+  },
+  {
+    id: 2,
+    name: "Medium",
+  },
+  {
+    id: 3,
+    name: "Low",
   },
 ];

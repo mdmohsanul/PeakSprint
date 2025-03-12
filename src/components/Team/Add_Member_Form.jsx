@@ -1,13 +1,25 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
+import { addTeamMember, fetchTeams } from "../../features/teamSlice";
+import { useNavigate } from "react-router";
 
-const Add_Member_Form = ({ setOpenModal }) => {
+const Add_Member_Form = ({ setOpenModal, teamId }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { users } = useSelector((state) => state.users);
-  console.log(users);
-
+  console.log(teamId);
+  const [selectedMember, setSelectedMember] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
+    const data = {
+      id: teamId,
+      member: [selectedMember],
+    };
+    console.log(data);
+    dispatch(addTeamMember(data));
+    dispatch(fetchTeams());
+    setOpenModal(false);
   };
   return (
     <>
@@ -23,25 +35,14 @@ const Add_Member_Form = ({ setOpenModal }) => {
         </div>
         <form onSubmit={submitHandler}>
           <div className="pb-4">
-            <label htmlFor="name" className="block pb-2">
-              Member Name:
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Enter Team Name"
-              className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
-            />
-          </div>
-
-          <div className="pb-4">
             <label htmlFor="member" className="block pb-2">
               Add Member:
             </label>
             <select
               name="status"
               id="status"
+              value={selectedMember}
+              onChange={(e) => setSelectedMember(e.target.value)}
               className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
             >
               <option value="">Select Member</option>

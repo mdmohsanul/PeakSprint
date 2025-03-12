@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { API_BASE_URL } from "../utils/Constants";
 
 export const fetchProjects = createAsyncThunk(
   "project/fetchProject",
@@ -12,14 +13,34 @@ export const fetchProjects = createAsyncThunk(
   }
 );
 
+export const addProject = createAsyncThunk(
+  "project/addProject",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/project`, data);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Something went wrong"
+      );
+    }
+  }
+);
+
 const projectSlice = createSlice({
   name: "project",
   initialState: {
     projects: [],
     status: "",
+    submitStatus: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null; // Action to clear error messages
+    },
+  },
   extraReducers: (builders) => {
     builders
       .addCase(fetchProjects.pending, (state, action) => {
@@ -31,8 +52,18 @@ const projectSlice = createSlice({
       .addCase(fetchProjects.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      }),
+      builders
+        .addCase(addProject.fulfilled, (state, action) => {
+          state.projects.push(action.payload);
+        })
+        .addCase(addProject.rejected, (state, action) => {
+          state.submitStatus = "failed";
+          // state.error = action.error.message;
+        });
   },
 });
+
+export const { clearError } = projectSlice.actions;
 
 export default projectSlice.reducer;

@@ -11,16 +11,15 @@ export const fetchUser = createAsyncThunk(
       if (!token) throw new Error("No token found");
 
       const response = await axios.get(`${API_BASE_URL}/auth/admin/data`, {
-        method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
 
-      if (!response.ok) throw new Error("Failed to fetch user data");
+      if (response.status !== 200) throw new Error("Failed to fetch user data");
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -42,7 +41,7 @@ export const loggedInUser = createAsyncThunk(
       );
       localStorage.setItem("user", JSON.stringify(response.data.loginUser));
       localStorage.setItem("token", response.data.token);
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       console.error("Login Error:", error.response?.data || error.message);
