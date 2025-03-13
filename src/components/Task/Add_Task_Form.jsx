@@ -8,9 +8,12 @@ import {
 } from "../../data/dashboard";
 import Dropdown from "../Form_Components/Dropdown";
 import Input_Box from "../Form_Components/Input_Box";
+import Multiselect_Dropdown_ID from "../Form_Components/Multiselect_Dropdown_ID";
 import Multiselect_Dropdown from "../Form_Components/Multiselect_Dropdown";
+import { addTask, fetchTask } from "../../features/taskSlice";
 
 const Add_Task_Form = ({ setOpenModal }) => {
+  const dispatch = useDispatch();
   const [err, setErr] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -36,7 +39,7 @@ const Add_Task_Form = ({ setOpenModal }) => {
     setErr("");
     return true;
   };
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     if (!validateForm()) return;
     const data = {
       name: taskName,
@@ -46,16 +49,17 @@ const Add_Task_Form = ({ setOpenModal }) => {
       tags: tags,
       timeToComplete: estimatedTime,
       status: taskStatus,
-      priority: "Medium",
+      priority: priority,
       dueDate: dueDate,
     };
+    console.log(data);
     try {
       setIsSubmitting(true);
-      console.log(data);
+      await dispatch(addTask(data)).unwrap();
+      dispatch(fetchTask());
       setOpenModal(false); // Close modal after success
     } catch (error) {
-      setErr("Failed to create task. Please try again.");
-      console.error(error);
+      setErr(error || "Failed to create task. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -97,7 +101,7 @@ const Add_Task_Form = ({ setOpenModal }) => {
               setValue={setTeam}
               name="teams"
             />
-            <Multiselect_Dropdown
+            <Multiselect_Dropdown_ID
               options={users}
               label="Team Member"
               name="teamMember"
@@ -141,7 +145,7 @@ const Add_Task_Form = ({ setOpenModal }) => {
             <Multiselect_Dropdown
               options={tagOptions}
               label="Tags"
-              name="teamMember"
+              name="tags"
               placeholder="Select Tags"
               value={tags}
               setValue={setTags}

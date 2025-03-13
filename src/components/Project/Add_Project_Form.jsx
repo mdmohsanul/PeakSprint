@@ -70,7 +70,7 @@ const Add_Project_Form = ({ setOpenModal }) => {
             </p>
           )}{" "}
           <Input_Box
-            label=" Project Name:"
+            label=" Project Name"
             value={name}
             setValue={setName}
             name="name"
@@ -85,7 +85,7 @@ const Add_Project_Form = ({ setOpenModal }) => {
             placeholder="Enter Project Description"
           />
           <Dropdown
-            label="Project Status:"
+            label="Project Status"
             value={projectStatus}
             setValue={setStatus}
             placeholder=""

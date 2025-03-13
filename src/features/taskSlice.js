@@ -21,6 +21,21 @@ export const fetchTaskByProject = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/task/${id}`);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Something went wrong"
+      );
+    }
+  }
+);
+
+export const addTask = createAsyncThunk(
+  "task/addTask",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/task/`, data);
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -62,6 +77,15 @@ const taskSlice = createSlice({
           state.projectTask = action.payload;
         })
         .addCase(fetchTaskByProject.rejected, (state, action) => {
+          state.status = "failed";
+          state.error = action.error.message;
+        }),
+      builders
+        .addCase(addTask.fulfilled, (state, action) => {
+          state.status = "success";
+          state.tasks.push(action.payload);
+        })
+        .addCase(addTask.rejected, (state, action) => {
           state.status = "failed";
           state.error = action.error.message;
         });

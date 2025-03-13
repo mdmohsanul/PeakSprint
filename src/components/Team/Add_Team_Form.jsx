@@ -2,23 +2,37 @@ import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
 import { addTeam } from "../../features/teamSlice";
+import Input_Box from "../Form_Components/Input_Box";
+import Textarea from "../Form_Components/Textarea";
 
 const Add_Team_Form = ({ setOpenModal }) => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
+  const [err, setErr] = useState("");
 
-  const nameRef = useRef("");
-  console.log("render");
-  const descriptionRef = useRef("");
-  const memberRef = useRef("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [members, setMembers] = useState([]);
+
+  function validateForm() {
+    if (!name || !members.length || !description) {
+      console.log("errr");
+      setErr("Please fill all the required fields.");
+      return false;
+    }
+    setErr("");
+    return true;
+  }
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     const data = {
-      name: nameRef.current.value,
-      description: descriptionRef.current.value,
-      members: [memberRef.current.value],
+      name,
+      description,
+      members,
     };
-    dispatch(addTeam(data));
+    console.log(data);
+    // dispatch(addTeam(data));
   };
   return (
     <>
@@ -34,34 +48,24 @@ const Add_Team_Form = ({ setOpenModal }) => {
         </div>
 
         <form onSubmit={submitHandler}>
-          <div className="pb-4">
-            <label htmlFor="name" className="block pb-2">
-              Team Name:
-            </label>
-            <input
-              ref={nameRef}
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Enter Team Name"
-              className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
-            />
-          </div>
+          {err && <p className="text-red-600 font-medium">{err}</p>}
 
-          <div className="pb-4">
-            <label htmlFor="description" className="block pb-2">
-              Team Description:
-            </label>
-            <textarea
-              ref={descriptionRef}
-              name="description"
-              id="description"
-              cols="30"
-              rows="2"
-              placeholder="Enter Project Description"
-              className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
-            ></textarea>
-          </div>
+          <Input_Box
+            label="Team Name"
+            value={name}
+            setValue={setName}
+            name="name"
+            type="text"
+            placeholder="Enter Team Name"
+          />
+          <Textarea
+            label="Team Description"
+            name="description"
+            value={description}
+            setValue={setDescription}
+            placeholder="Enter Team Description"
+          />
+
           <div className="pb-4">
             <label htmlFor="status" className="block pb-2">
               Add Member:
@@ -69,7 +73,8 @@ const Add_Team_Form = ({ setOpenModal }) => {
             <select
               name="status"
               id="status"
-              ref={memberRef}
+              value={members}
+              onChange={(e) => setMembers((prev) => [...prev, e.target.value])}
               className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
             >
               <option value="">Select Member</option>

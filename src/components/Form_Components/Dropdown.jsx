@@ -17,7 +17,11 @@ const Dropdown = ({ options, label, value, setValue, placeholder, name }) => {
         >
           <option value=""> {label}</option>
           {options?.map((item) => (
-            <option key={item._id} value={item._id} className="text-gray-800">
+            <option
+              key={item._id || item.id}
+              value={item._id}
+              className="text-gray-800"
+            >
               {item.name}
             </option>
           ))}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { FaChevronDown } from "react-icons/fa6";
 
-const Multiselect_Dropdown = ({
+const Multiselect_Dropdown_ID = ({
   options,
   label,
   name,
@@ -11,9 +11,9 @@ const Multiselect_Dropdown = ({
   setValue,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [showName, setShowName] = useState([]);
   const toggleSelection = (option) => {
-    setValue((prev) =>
+    setShowName((prev) =>
       prev.includes(option)
         ? prev.filter((item) => item !== option)
         : [...prev, option]
@@ -30,11 +30,11 @@ const Multiselect_Dropdown = ({
           className="min-h-12 w-full rounded-md border border-gray-300 cursor-pointer flex justify-between items-center px-4"
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          {value.length === 0 ? (
+          {showName.length === 0 ? (
             <p className="text-gray-500">{placeholder}</p>
           ) : (
             <p className="px-2">
-              {value?.map((item) => (
+              {showName?.map((item) => (
                 <span className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block">
                   <span className="flex items-center grid-cols-2 gap-4 cursor-pointer">
                     {item}
@@ -57,14 +57,17 @@ const Multiselect_Dropdown = ({
             {options?.map((item) => (
               <div
                 id={name}
-                key={item.id}
+                key={item._id}
                 className={`px-5 py-2 mb-1  flex items-center justify-between hover:bg-blue-600 hover:text-white ${
-                  value.includes(item.name) ? "bg-blue-200" : ""
+                  showName.includes(item.name) ? "bg-blue-200" : ""
                 }`}
-                onClick={() => toggleSelection(item.name)}
+                onClick={(e) => {
+                  toggleSelection(item.name);
+                  setValue((prev) => [...prev, item._id]);
+                }}
               >
                 {item.name}
-                {value.includes(item.name) && <RxCross2 />}
+                {showName.includes(item.name) && <RxCross2 />}
               </div>
             ))}
           </div>
@@ -74,4 +77,4 @@ const Multiselect_Dropdown = ({
   );
 };
 
-export default Multiselect_Dropdown;
+export default Multiselect_Dropdown_ID;

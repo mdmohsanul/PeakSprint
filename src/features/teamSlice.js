@@ -52,6 +52,7 @@ const teamSlice = createSlice({
     teams: [],
     status: "",
     error: null,
+    addTeamErr: null,
   },
   reducers: {},
   extraReducers: (builders) => {
@@ -82,7 +83,7 @@ const teamSlice = createSlice({
         })
         .addCase(addTeam.rejected, (state, action) => {
           state.status = "failed";
-          state.error = action.error.message;
+          state.addTeamErr = action.payload;
         });
   },
 });
