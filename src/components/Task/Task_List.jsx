@@ -32,8 +32,8 @@ const Task_List = ({ tasks }) => {
             <th className="col-span-2 pl-3">STATUS</th>
           </tr>
         </thead>
-        {tasks?.map(({ name, owners, dueDate, priority, status }) => (
-          <tbody>
+        {tasks?.map(({ name, owners, dueDate, priority, status, _id }) => (
+          <tbody key={_id}>
             <tr className="grid grid-cols-12   place-content-center border border-gray-300 items-center">
               <td class="  border-r border-gray-300 col-span-4 py-4 pl-5 font-semibold text-gray-900">
                 {name}

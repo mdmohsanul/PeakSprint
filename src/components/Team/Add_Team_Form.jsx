@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { addTeam } from "../../features/teamSlice";
+import { addTeam, fetchTeams } from "../../features/teamSlice";
 import Input_Box from "../Form_Components/Input_Box";
 import Textarea from "../Form_Components/Textarea";
+import Multiselect_Dropdown_ID from "../Form_Components/Multiselect_Dropdown_ID";
 
 const Add_Team_Form = ({ setOpenModal }) => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.users);
   const [err, setErr] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -23,7 +25,7 @@ const Add_Team_Form = ({ setOpenModal }) => {
     setErr("");
     return true;
   }
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
     const data = {
@@ -31,7 +33,16 @@ const Add_Team_Form = ({ setOpenModal }) => {
       description,
       members,
     };
-    console.log(data);
+    try {
+      setIsSubmitting(true);
+      await dispatch(addTeam(data)).unwrap();
+      dispatch(fetchTeams());
+      setOpenModal(false); // Close modal after success
+    } catch (error) {
+      setErr(error || "Failed to create team. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
     // dispatch(addTeam(data));
   };
   return (
@@ -65,26 +76,14 @@ const Add_Team_Form = ({ setOpenModal }) => {
             setValue={setDescription}
             placeholder="Enter Team Description"
           />
+          <Multiselect_Dropdown_ID
+            label="Add Member"
+            value={members}
+            setValue={setMembers}
+            name="member"
+            options={users}
+          />
 
-          <div className="pb-4">
-            <label htmlFor="status" className="block pb-2">
-              Add Member:
-            </label>
-            <select
-              name="status"
-              id="status"
-              value={members}
-              onChange={(e) => setMembers((prev) => [...prev, e.target.value])}
-              className="w-full border border-gray-300 focus:outline-gray-300 rounded-md py-1.5 px-2 placeholder:text-sm"
-            >
-              <option value="">Select Member</option>
-              {users?.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
           <div className="flex gap-4 mt-3">
             <button className="bg-blue-500 text-white rounded-md px-5 py-2 cursor-pointer">
               Create

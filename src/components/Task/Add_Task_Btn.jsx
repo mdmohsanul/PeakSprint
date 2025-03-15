@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Add_Task_Form from "./Add_Task_Form";
 
-const Add_Task_Btn = () => {
+const Add_Task_Btn = ({ projectId }) => {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -15,7 +15,7 @@ const Add_Task_Btn = () => {
       {/* open form as modal */}
       {openModal && (
         <div className="fixed  inset-0 z-30 flex items-center justify-center backdrop-blur-xs bg-black/50">
-          <Add_Task_Form setOpenModal={setOpenModal} />
+          <Add_Task_Form setOpenModal={setOpenModal} projectId={projectId} />
         </div>
       )}
     </>

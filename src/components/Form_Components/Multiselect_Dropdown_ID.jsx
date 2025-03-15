@@ -19,6 +19,11 @@ const Multiselect_Dropdown_ID = ({
         : [...prev, option]
     );
   };
+  const toggleSelectionId = (id) => {
+    setValue((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
 
   return (
     <>
@@ -34,8 +39,11 @@ const Multiselect_Dropdown_ID = ({
             <p className="text-gray-500">{placeholder}</p>
           ) : (
             <p className="px-2">
-              {showName?.map((item) => (
-                <span className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block">
+              {showName?.map((item, i) => (
+                <span
+                  key={i}
+                  className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block"
+                >
                   <span className="flex items-center grid-cols-2 gap-4 cursor-pointer">
                     {item}
                     <RxCross2
@@ -53,21 +61,21 @@ const Multiselect_Dropdown_ID = ({
           <FaChevronDown size={12} className="text-gray-500" />
         </div>
         {showDropdown && (
-          <div className="w-full absolute left-0 -top-[170px]  bg-white h-48 cursor-pointer border border-gray-400 overflow-y-scroll">
+          <div className="w-5/6 absolute left-0 -top-[170px]  bg-white h-48 cursor-pointer border border-gray-400 overflow-y-scroll">
             {options?.map((item) => (
               <div
                 id={name}
                 key={item._id}
                 className={`px-5 py-2 mb-1  flex items-center justify-between hover:bg-blue-600 hover:text-white ${
-                  showName.includes(item.name) ? "bg-blue-200" : ""
+                  showName.includes(item.name) ? "bg-blue-600 text-white" : ""
                 }`}
                 onClick={(e) => {
                   toggleSelection(item.name);
-                  setValue((prev) => [...prev, item._id]);
+                  toggleSelectionId(item._id);
                 }}
               >
                 {item.name}
-                {showName.includes(item.name) && <RxCross2 />}
+                {showName.includes(item.name) && <RxCross2 size={20} />}
               </div>
             ))}
           </div>

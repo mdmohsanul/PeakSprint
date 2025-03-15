@@ -14,7 +14,7 @@ const Header = () => {
   };
   return (
     <>
-      <div className="w-full md:pl-64 fixed top-14 md:top-0 h-14 border-t border-red-500 md:border-none   bg-white   shadow-[1px_1px_20px_10px_#00000024]">
+      <div className="w-full md:pl-64 fixed top-14 md:top-0 h-14 border-t border-red-500 md:border-none z-10  bg-white   shadow-[1px_1px_20px_10px_#00000024]">
         <div className="max-w-4xl mx-auto  pl-8">
           <div className="flex items-center justify-between py-1">
             {/* Search bar */}
@@ -42,7 +42,7 @@ const Header = () => {
                 </button>
                 <div className="absolute right-0 top-full z-50 mt-2 w-48 bg-white border border-gray-300 group-hover:block shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <Link
-                    to="/profile"
+                    to="/dashboard/profile"
                     className="block px-4 py-2 hover:bg-gray-200"
                   >
                     Profile

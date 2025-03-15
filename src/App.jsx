@@ -13,6 +13,9 @@ import Team_Page from "./pages/Team_Page";
 import Team_Details_Page from "./pages/Team_Details_Page";
 import Project_Page from "./pages/Project_Page";
 import Project_Detail_Page from "./pages/Project_Detail_Page";
+import Profile_Page from "./pages/Profile_Page";
+import Task_Details_Page from "./pages/Task_Details_Page";
+import Test from "./pages/Test";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,7 +23,6 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      console.log("app");
       dispatch(fetchUser(token));
     }
   }, [dispatch, token]);
@@ -75,6 +77,22 @@ const appRouter = createBrowserRouter([
           {
             path: "/dashboard/projects/:projectId",
             element: <Project_Detail_Page />,
+          },
+          {
+            path: "/dashboard/profile",
+            element: <Profile_Page />,
+          },
+          {
+            path: "/dashboard/tasks",
+            element: <Task_Page />,
+          },
+          {
+            path: "/dashboard/tasks/:taskId",
+            element: <Task_Details_Page />,
+          },
+          {
+            path: "/dashboard/test",
+            element: <Test />,
           },
         ],
       },

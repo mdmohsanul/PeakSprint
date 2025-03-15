@@ -8,18 +8,30 @@ const Add_Member_Form = ({ setOpenModal, teamId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { users } = useSelector((state) => state.users);
-  console.log(teamId);
+  const [err, setErr] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedMember, setSelectedMember] = useState("");
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
+    if (!teamId || !selectedMember.length) {
+      setErr("Required missing fields");
+      return;
+    }
     const data = {
       id: teamId,
-      member: [selectedMember],
+      members: [selectedMember],
     };
-    console.log(data);
-    dispatch(addTeamMember(data));
-    dispatch(fetchTeams());
-    setOpenModal(false);
+
+    try {
+      setIsSubmitting(true);
+      await dispatch(addTeamMember(data)).unwrap();
+      dispatch(fetchTeams());
+      setOpenModal(false); // Close modal after success
+    } catch (error) {
+      setErr(error || "Failed to create team. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <>
@@ -34,6 +46,7 @@ const Add_Member_Form = ({ setOpenModal, teamId }) => {
           </button>
         </div>
         <form onSubmit={submitHandler}>
+          {err && <p className="text-red-600 py-2">{err}</p>}
           <div className="pb-4">
             <label htmlFor="member" className="block pb-2">
               Add Member:

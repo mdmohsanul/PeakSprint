@@ -12,7 +12,6 @@ import Textarea from "../Form_Components/Textarea";
 import { statusOptions } from "../../data/dashboard";
 
 const Add_Project_Form = ({ setOpenModal }) => {
-  console.log(statusOptions);
   const [name, setName] = useState("");
   const [projectStatus, setStatus] = useState("");
   const [description, setDescription] = useState("");

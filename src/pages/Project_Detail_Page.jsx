@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import Add_Task_Btn from "../components/Task/Add_Task_Btn";
 import Task_List from "../components/Task/Task_List";
 import { statusOptions } from "../data/dashboard";
+import { fetchProjects } from "../features/projectSlice";
 import { fetchTaskByProject } from "../features/taskSlice";
 
 const Project_Detail_Page = () => {
@@ -16,6 +17,7 @@ const Project_Detail_Page = () => {
     "py-1 px-3 rounded-3xl border border-gray-500 text-gray-700 hover:bg-gray-200 text-sm cursor-pointer ml-4";
   useEffect(() => {
     dispatch(fetchTaskByProject(projectId));
+    dispatch(fetchProjects());
   }, [dispatch]);
 
   if (status === "loading") return <p className="ml:64 mt:24">Loading......</p>;
@@ -54,7 +56,7 @@ const Project_Detail_Page = () => {
                 ))}
               </select>
             </label>
-            <Add_Task_Btn />
+            <Add_Task_Btn projectId={projectId} />
           </div>
         </div>
         <div>

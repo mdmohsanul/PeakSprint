@@ -5,7 +5,7 @@ const useDate = () => {
     const isoDate = dueDate;
     const date = parseISO(isoDate);
 
-    return format(date, "do MMMM , yyyy");
+    return format(date, "do MMMM, yyyy");
   }
   return extractedDate;
 };

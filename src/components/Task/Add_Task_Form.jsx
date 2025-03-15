@@ -10,13 +10,18 @@ import Dropdown from "../Form_Components/Dropdown";
 import Input_Box from "../Form_Components/Input_Box";
 import Multiselect_Dropdown_ID from "../Form_Components/Multiselect_Dropdown_ID";
 import Multiselect_Dropdown from "../Form_Components/Multiselect_Dropdown";
-import { addTask, fetchTask } from "../../features/taskSlice";
+import {
+  addTask,
+  clearError,
+  fetchTask,
+  fetchTaskByProject,
+} from "../../features/taskSlice";
 
-const Add_Task_Form = ({ setOpenModal }) => {
+const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
   const dispatch = useDispatch();
   const [err, setErr] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  console.log(projectId);
   const [taskName, setTaskName] = useState("");
   const [team, setTeam] = useState("");
   const [project, setProject] = useState("");
@@ -41,11 +46,12 @@ const Add_Task_Form = ({ setOpenModal }) => {
   };
   const submitHandler = async (e) => {
     if (!validateForm()) return;
+    const filterTeam = [...new Set(teamMember)];
     const data = {
       name: taskName,
       project: project,
       team: team, // Team ID
-      owners: teamMember,
+      owners: filterTeam,
       tags: tags,
       timeToComplete: estimatedTime,
       status: taskStatus,
@@ -57,6 +63,8 @@ const Add_Task_Form = ({ setOpenModal }) => {
       setIsSubmitting(true);
       await dispatch(addTask(data)).unwrap();
       dispatch(fetchTask());
+      projectId && dispatch(fetchTaskByProject(projectId));
+      dispatch(clearError());
       setOpenModal(false); // Close modal after success
     } catch (error) {
       setErr(error || "Failed to create task. Please try again.");

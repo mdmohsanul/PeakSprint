@@ -10,7 +10,7 @@ const Team_Details_Page = () => {
   const { teams, status, error } = useSelector((state) => state.teams);
   const [openModal, setOpenModal] = useState(false);
   const findTeam = teams?.find((item) => item._id === teamId);
-  console.log(findTeam);
+
   const getName = (value, idx) => {
     const valueArr = value.split(" ");
     const char =
@@ -23,10 +23,7 @@ const Team_Details_Page = () => {
       2: "bg-red-500 text-red-100",
       3: "bg-gray-600 text-gray-100",
     };
-    useEffect(() => {
-      console.log("rednder on form submit");
-      dispatch(fetchTeams());
-    }, []);
+
     return (
       <span
         className={`${classes[idx]}  p-2 w-10 h-10 rounded-full flex items-center justify-center`}
@@ -35,6 +32,9 @@ const Team_Details_Page = () => {
       </span>
     );
   };
+  useEffect(() => {
+    dispatch(fetchTeams());
+  }, [dispatch]);
   return (
     <>
       <div className="md:ml-64 max-w-5xl mx-auto md:p-8 p-4 md:mt-16 mt-28 bg-white">

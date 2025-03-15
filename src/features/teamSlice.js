@@ -23,12 +23,15 @@ export const addTeamMember = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const { id, ...rest } = data;
+      console.log(rest);
       const response = await axios.post(`${API_BASE_URL}/team/${id}`, rest);
       if (response.status !== 200) throw new Error("Failed to add member");
       console.log(response.data);
-      return response.data;
+      return { data: response.data, id };
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+      return rejectWithValue(
+        error.response?.data.message || "Something went wrong"
+      );
     }
   }
 );
@@ -36,12 +39,14 @@ export const addTeam = createAsyncThunk(
   "team/addTeam",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/team/`, data);
+      const response = await axios.post(`${API_BASE_URL}/team`, data);
       if (response.status !== 200) throw new Error("Failed to add member");
       console.log(response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Something went wrong");
+      return rejectWithValue(
+        error.response?.data.message || "Something went wrong"
+      );
     }
   }
 );
@@ -70,7 +75,14 @@ const teamSlice = createSlice({
       }),
       builders
         .addCase(addTeamMember.fulfilled, (state, action) => {
-          state.teams.members.push(action.payload);
+          console.log(action.payload);
+          const findTeam = state.teams.findIndex(
+            (team) => team._id === action.payload.id
+          );
+          console.log(findTeam);
+          if (findTeam !== -1) {
+            state.teams[findTeam].members.push(action.payload.data);
+          }
         })
         .addCase(addTeamMember.rejected, (state, action) => {
           state.status = "failed";
@@ -82,8 +94,7 @@ const teamSlice = createSlice({
           state.teams.push(action.payload);
         })
         .addCase(addTeam.rejected, (state, action) => {
-          state.status = "failed";
-          state.addTeamErr = action.payload;
+          state.addTeamErr = "failed";
         });
   },
 });

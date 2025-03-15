@@ -31,6 +31,21 @@ export const fetchTaskByProject = createAsyncThunk(
   }
 );
 
+export const fetchTaskByTaskID = createAsyncThunk(
+  "task/fetchTaskByTaskID",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/task/task/${id}`);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Something went wrong"
+      );
+    }
+  }
+);
+
 export const addTask = createAsyncThunk(
   "task/addTask",
   async (data, { rejectWithValue }) => {
@@ -51,10 +66,16 @@ const taskSlice = createSlice({
   initialState: {
     tasks: [],
     projectTask: [],
+    task: {},
     status: "",
     error: null,
+    addTaskErr: null,
   },
-  reducers: {},
+  reducers: {
+    clearError: (state, action) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builders) => {
     builders
       .addCase(fetchTask.pending, (state, action) => {
@@ -81,15 +102,26 @@ const taskSlice = createSlice({
           state.error = action.error.message;
         }),
       builders
+        .addCase(fetchTaskByTaskID.pending, (state, action) => {
+          state.status = "loading";
+        })
+        .addCase(fetchTaskByTaskID.fulfilled, (state, action) => {
+          state.status = "success";
+          state.task = action.payload;
+        })
+        .addCase(fetchTaskByTaskID.rejected, (state, action) => {
+          state.status = "failed";
+          state.error = action.error.message;
+        }),
+      builders
         .addCase(addTask.fulfilled, (state, action) => {
           state.status = "success";
           state.tasks.push(action.payload);
         })
         .addCase(addTask.rejected, (state, action) => {
-          state.status = "failed";
-          state.error = action.error.message;
+          state.addTaskErr = "failed";
         });
   },
 });
-
+export const { clearError } = taskSlice.actions;
 export default taskSlice.reducer;
