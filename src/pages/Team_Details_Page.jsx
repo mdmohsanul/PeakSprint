@@ -12,9 +12,9 @@ const Team_Details_Page = () => {
   const findTeam = teams?.find((item) => item._id === teamId);
 
   const getName = (value, idx) => {
-    const valueArr = value.split(" ");
+    const valueArr = value?.split(" ");
     const char =
-      valueArr.length > 1
+      valueArr?.length > 1
         ? valueArr[0].charAt(0) + valueArr[1].charAt(0)
         : valueArr[0].charAt(0);
     const classes = {
@@ -37,7 +37,7 @@ const Team_Details_Page = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="md:ml-64 max-w-5xl mx-auto md:p-8 p-4 md:mt-16 mt-28 bg-white">
+      <div className="page-container">
         <Link
           to="/dashboard/teams"
           className="text-blue-600 font-medium hover:text-blue-800"

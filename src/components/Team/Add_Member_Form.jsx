@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { addTeamMember, fetchTeams } from "../../features/teamSlice";
+import {
+  addTeamMember,
+  clearError,
+  fetchTeams,
+} from "../../features/teamSlice";
 import { useNavigate } from "react-router";
 
 const Add_Member_Form = ({ setOpenModal, teamId }) => {
@@ -26,6 +30,7 @@ const Add_Member_Form = ({ setOpenModal, teamId }) => {
       setIsSubmitting(true);
       await dispatch(addTeamMember(data)).unwrap();
       dispatch(fetchTeams());
+      dispatch(clearError());
       setOpenModal(false); // Close modal after success
     } catch (error) {
       setErr(error || "Failed to create team. Please try again.");

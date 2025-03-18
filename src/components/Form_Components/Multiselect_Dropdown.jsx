@@ -34,8 +34,11 @@ const Multiselect_Dropdown = ({
             <p className="text-gray-500">{placeholder}</p>
           ) : (
             <p className="px-2">
-              {value?.map((item) => (
-                <span className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block">
+              {value?.map((item, i) => (
+                <span
+                  key={i}
+                  className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block"
+                >
                   <span className="flex items-center grid-cols-2 gap-4 cursor-pointer">
                     {item}
                     <RxCross2
@@ -57,14 +60,17 @@ const Multiselect_Dropdown = ({
             {options?.map((item) => (
               <div
                 id={name}
-                key={item.id}
-                className={`px-5 py-2 mb-1  flex items-center justify-between hover:bg-blue-600 hover:text-white ${
+                key={item._id}
+                className={`px-5 py-1.5  flex items-center justify-between hover:bg-blue-600 hover:text-white ${
                   value.includes(item.name) ? "bg-blue-200" : ""
                 }`}
-                onClick={() => toggleSelection(item.name)}
+                onClick={() => {
+                  toggleSelection(item.name);
+                  setShowDropdown(false);
+                }}
               >
                 {item.name}
-                {value.includes(item.name) && <RxCross2 />}
+                {value.includes(item.name) && <RxCross2 size={20} />}
               </div>
             ))}
           </div>

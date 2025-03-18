@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import Project_Details_Filters from "../components/Project/Project_Details_Filters";
 import Add_Task_Btn from "../components/Task/Add_Task_Btn";
 import Task_List from "../components/Task/Task_List";
 import { statusOptions } from "../data/dashboard";
 import { fetchProjects } from "../features/projectSlice";
 import { fetchTaskByProject } from "../features/taskSlice";
+import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
 
 const Project_Detail_Page = () => {
   const { projectId } = useParams();
@@ -20,11 +22,22 @@ const Project_Detail_Page = () => {
     dispatch(fetchProjects());
   }, [dispatch]);
 
-  if (status === "loading") return <p className="ml:64 mt:24">Loading......</p>;
-  if (error) return <p>Error: {error}</p>;
+  let priorityMap = { High: 1, Medium: 2, Low: 3 };
+  const filterTasks = [...projectTask].sort(
+    (a, b) => priorityMap[a.priority] - priorityMap[b.priority]
+  );
+  console.log(filterTasks);
+
+  if (status === "loading")
+    return (
+      <p className="page-container">
+        <Dashboard_Shimmer />
+      </p>
+    );
+  if (error) return <p className="page-container">Error: {error}</p>;
   return (
     <>
-      <div className="md:ml-64 max-w-5xl mx-auto md:p-8 p-4 md:mt-16 mt-28 bg-white">
+      <div className="page-container">
         <div>
           <h1 className="text-2xl font-medium text-gray-800">
             {findProject?.name}
@@ -33,11 +46,7 @@ const Project_Detail_Page = () => {
         </div>
         <div className="h-16 flex items-center justify-between">
           <div>
-            Sort By:
-            <button className={`${sortClasses}`}>Priority Low-High</button>
-            <button className={`${sortClasses}`}>Priority High-Low</button>
-            <button className={`${sortClasses}`}>Newest First</button>
-            <button className={`${sortClasses}`}>Oldest First</button>
+            <Project_Details_Filters />
           </div>
           <div className="flex items-center gap-3">
             <label htmlFor="projectFilter" className="">
@@ -49,9 +58,9 @@ const Project_Detail_Page = () => {
                 <option value="" className="text-sm text-gray-600 ">
                   Filter
                 </option>
-                {statusOptions.map(({ id, option }) => (
-                  <option key={id} value={option}>
-                    {option}
+                {statusOptions.map(({ id, name }) => (
+                  <option key={id} value={name}>
+                    {name}
                   </option>
                 ))}
               </select>

@@ -11,11 +11,12 @@ import Dashboard_Shimmer from "../../Shimmer_UI/Dashboard_Shimmer";
 const Task_Section = () => {
   const dispatch = useDispatch();
   const { tasks, status, error } = useSelector((state) => state.tasks);
-  console.log(tasks);
+
   const showTasks = tasks.slice(0, 3);
   useEffect(() => {
     dispatch(fetchTask());
   }, [dispatch]);
+  console.log(tasks);
   if (status === "loading") return <Dashboard_Shimmer />;
   if (status === "failed") return <p>Error: {error}</p>;
   return (

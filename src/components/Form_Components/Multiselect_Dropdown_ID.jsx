@@ -11,17 +11,12 @@ const Multiselect_Dropdown_ID = ({
   setValue,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showName, setShowName] = useState([]);
-  const toggleSelection = (option) => {
-    setShowName((prev) =>
-      prev.includes(option)
-        ? prev.filter((item) => item !== option)
-        : [...prev, option]
-    );
-  };
-  const toggleSelectionId = (id) => {
+
+  const toggleSelection = (data) => {
     setValue((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.map((item) => item._id).includes(data._id)
+        ? prev.filter((item) => item._id !== data._id)
+        : [...prev, data]
     );
   };
 
@@ -35,17 +30,17 @@ const Multiselect_Dropdown_ID = ({
           className="min-h-12 w-full rounded-md border border-gray-300 cursor-pointer flex justify-between items-center px-4"
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          {showName.length === 0 ? (
+          {value.length === 0 ? (
             <p className="text-gray-500">{placeholder}</p>
           ) : (
             <p className="px-2">
-              {showName?.map((item, i) => (
+              {value?.map((item, i) => (
                 <span
                   key={i}
                   className="bg-blue-600 text-white mr-3 py-0.5 px-2 m-2 inline-block"
                 >
                   <span className="flex items-center grid-cols-2 gap-4 cursor-pointer">
-                    {item}
+                    {item.name}
                     <RxCross2
                       size={20}
                       onClick={(e) => {
@@ -66,16 +61,23 @@ const Multiselect_Dropdown_ID = ({
               <div
                 id={name}
                 key={item._id}
-                className={`px-5 py-2 mb-1  flex items-center justify-between hover:bg-blue-600 hover:text-white ${
-                  showName.includes(item.name) ? "bg-blue-600 text-white" : ""
-                }`}
+                className={`px-5 py-1.5   flex items-center justify-between hover:bg-blue-600 hover:text-white 
+                 ${
+                   value.map((item) => item.name).includes(item.name)
+                     ? "bg-gray-300"
+                     : ""
+                 }
+                `}
                 onClick={(e) => {
-                  toggleSelection(item.name);
-                  toggleSelectionId(item._id);
+                  toggleSelection(item);
+
+                  setShowDropdown(false);
                 }}
               >
                 {item.name}
-                {showName.includes(item.name) && <RxCross2 size={20} />}
+                {value.map((item) => item.name).includes(item.name) && (
+                  <RxCross2 size={20} />
+                )}
               </div>
             ))}
           </div>

@@ -36,7 +36,7 @@ const Task_Details_Page = () => {
   };
   return (
     <>
-      <div className="md:ml-64 max-w-5xl mx-auto md:p-8 p-4 md:mt-16 mt-28 bg-white">
+      <div className="page-container">
         <div className="max-w-4xl mx-auto  overflow-hidden border border-gray-200 rounded-lg px-8 py-5">
           <h1 className="text-2xl font-bold text-gray-800 pb-5">
             {task?.name}

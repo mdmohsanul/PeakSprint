@@ -5,8 +5,8 @@ const useOwners = () => {
       .map((item) => {
         const words = item?.split(" ");
         return words?.length > 1
-          ? words[0].charAt(0) + words[1].charAt(0)
-          : words[0].charAt(0);
+          ? words[0]?.charAt(0) + words[1]?.charAt(0)
+          : words[0]?.charAt(0);
       });
 
     const classes = {
@@ -18,7 +18,7 @@ const useOwners = () => {
     const names =
       extractNames?.length > 3 ? (
         <div className="flex">
-          {[...extractNames].splice(0, 3)?.map((item, i) => (
+          {[...extractNames]?.splice(0, 3)?.map((item, i) => (
             <span
               key={i}
               className={`-ml-2 flex items-center justify-center  p-2 w-10 h-10 rounded-full ${classes[i]}`}
@@ -27,7 +27,7 @@ const useOwners = () => {
             </span>
           ))}
           <span className="-ml-2 flex items-center justify-center  p-2 w-10 h-10 rounded-full bg-gray-100">
-            +{extractNames.length - 3}
+            +{extractNames?.length - 3}
           </span>
         </div>
       ) : (

@@ -3,6 +3,8 @@ import useDate from "../../hooks/useDate";
 import useOwners from "../../hooks/useOwners";
 import { CiFlag1 } from "react-icons/ci";
 
+// This Task_List component is displayed in Project details page
+
 const Task_List = ({ tasks }) => {
   // custom hook to extract username
   const { getOwner } = useOwners();

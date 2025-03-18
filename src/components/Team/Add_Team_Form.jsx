@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RxCross2 } from "react-icons/rx";
-import { addTeam, fetchTeams } from "../../features/teamSlice";
+import { addTeam, clearError, fetchTeams } from "../../features/teamSlice";
 import Input_Box from "../Form_Components/Input_Box";
 import Textarea from "../Form_Components/Textarea";
 import Multiselect_Dropdown_ID from "../Form_Components/Multiselect_Dropdown_ID";
@@ -18,33 +18,33 @@ const Add_Team_Form = ({ setOpenModal }) => {
 
   function validateForm() {
     if (!name || !members.length || !description) {
-      console.log("errr");
       setErr("Please fill all the required fields.");
       return false;
     }
     setErr("");
     return true;
   }
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async () => {
+    const getMembersId = members.map((item) => item._id);
     if (!validateForm()) return;
     const data = {
       name,
       description,
-      members,
+      members: getMembersId,
     };
     try {
       setIsSubmitting(true);
       await dispatch(addTeam(data)).unwrap();
       dispatch(fetchTeams());
+      dispatch(clearError());
       setOpenModal(false); // Close modal after success
     } catch (error) {
       setErr(error || "Failed to create team. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
-    // dispatch(addTeam(data));
   };
+
   return (
     <>
       <div className="md:w-2/6 w-5/6  bg-white p-6">
@@ -58,7 +58,7 @@ const Add_Team_Form = ({ setOpenModal }) => {
           </button>
         </div>
 
-        <form onSubmit={submitHandler}>
+        <form onSubmit={(e) => e.preventDefault()}>
           {err && <p className="text-red-600 font-medium">{err}</p>}
 
           <Input_Box
@@ -85,8 +85,15 @@ const Add_Team_Form = ({ setOpenModal }) => {
           />
 
           <div className="flex gap-4 mt-3">
-            <button className="bg-blue-500 text-white rounded-md px-5 py-2 cursor-pointer">
-              Create
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              onClick={submitHandler}
+              className={`bg-blue-500 text-white rounded-md px-5 py-2 cursor-pointer ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {isSubmitting ? "Creating..." : "Create"}
             </button>
             <button
               className="bg-gray-500 text-white rounded-md px-5 py-2 cursor-pointer"

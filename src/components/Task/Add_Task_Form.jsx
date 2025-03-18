@@ -21,7 +21,7 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
   const dispatch = useDispatch();
   const [err, setErr] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(projectId);
+
   const [taskName, setTaskName] = useState("");
   const [team, setTeam] = useState("");
   const [project, setProject] = useState("");
@@ -46,12 +46,12 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
   };
   const submitHandler = async (e) => {
     if (!validateForm()) return;
-    const filterTeam = [...new Set(teamMember)];
+    const getOwnerIds = teamMember.map((item) => item._id);
     const data = {
       name: taskName,
       project: project,
       team: team, // Team ID
-      owners: filterTeam,
+      owners: getOwnerIds,
       tags: tags,
       timeToComplete: estimatedTime,
       status: taskStatus,
@@ -103,19 +103,11 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
               name="projects"
             />
             <Dropdown
-              options={teams}
-              label="Team"
-              value={team}
-              setValue={setTeam}
-              name="teams"
-            />
-            <Multiselect_Dropdown_ID
-              options={users}
-              label="Team Member"
-              name="teamMember"
-              placeholder="Select Team Member"
-              value={teamMember}
-              setValue={setTeamMember}
+              options={priorityOptions}
+              label="Priority"
+              value={priority}
+              setValue={setPriority}
+              name="priority"
             />
             <div className="flex gap-7">
               <div>
@@ -144,11 +136,19 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
               </div>
             </div>
             <Dropdown
-              name="taskStatus"
-              options={statusOptions}
-              label="Status"
-              value={taskStatus}
-              setValue={setTaskStatus}
+              options={teams}
+              label="Team"
+              value={team}
+              setValue={setTeam}
+              name="teams"
+            />
+            <Multiselect_Dropdown_ID
+              options={users}
+              label="Team Member"
+              name="teamMember"
+              placeholder="Select Team Member"
+              value={teamMember}
+              setValue={setTeamMember}
             />
             <Multiselect_Dropdown
               options={tagOptions}
@@ -157,13 +157,13 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
               placeholder="Select Tags"
               value={tags}
               setValue={setTags}
-            />
+            />{" "}
             <Dropdown
-              options={priorityOptions}
-              label="Priority"
-              value={priority}
-              setValue={setPriority}
-              name="priority"
+              name="taskStatus"
+              options={statusOptions}
+              label="Status"
+              value={taskStatus}
+              setValue={setTaskStatus}
             />
           </div>
           <div className="flex gap-4 mt-3">
