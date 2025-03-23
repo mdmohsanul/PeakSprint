@@ -2,10 +2,15 @@ import React from "react";
 import useDate from "../../hooks/useDate";
 import useOwners from "../../hooks/useOwners";
 import { CiFlag1 } from "react-icons/ci";
+import useFilterTasks from "../../hooks/useFilterTasks";
+import { useSelector } from "react-redux";
 
 // This Task_List component is displayed in Project details page
 
-const Task_List = ({ tasks }) => {
+const Task_List = () => {
+  const { projectTask } = useSelector((state) => state.tasks);
+  //  Filters -- used a customHook
+  const { taskList } = useFilterTasks(projectTask);
   // custom hook to extract username
   const { getOwner } = useOwners();
   const extractedDate = useDate();
@@ -34,27 +39,27 @@ const Task_List = ({ tasks }) => {
             <th className="col-span-2 pl-3">STATUS</th>
           </tr>
         </thead>
-        {tasks?.map(({ name, owners, dueDate, priority, status, _id }) => (
+        {taskList?.map(({ name, owners, dueDate, priority, status, _id }) => (
           <tbody key={_id}>
             <tr className="grid grid-cols-12   place-content-center border border-gray-300 items-center">
-              <td class="  border-r border-gray-300 col-span-4 py-4 pl-5 font-semibold text-gray-900">
+              <td className="  border-r border-gray-300 col-span-4 py-4 pl-5 font-semibold text-gray-900">
                 {name}
               </td>
-              <td class="border-r border-gray-300 col-span-2 py-2 pl-6 flex">
+              <td className="border-r border-gray-300 col-span-2 py-2 pl-6 flex">
                 {getOwner(owners)}
               </td>
-              <td class={`border-r border-gray-300 col-span-2 py-4 pl-3 `}>
+              <td className={`border-r border-gray-300 col-span-2 py-4 pl-3 `}>
                 <span
                   className={`${prClasses[priority]} px-2 text-xs font-medium py-1 rounded-md flex items-center gap-3 w-24 `}
                 >
                   <CiFlag1 /> {priority}
                 </span>
               </td>
-              <td class="border-r border-gray-300 col-span-2 py-[18px] pl-3 text-sm font-semibold text-gray-800">
+              <td className="border-r border-gray-300 col-span-2 py-[18px] pl-3 text-sm font-semibold text-gray-800">
                 {extractedDate(dueDate)}
               </td>
 
-              <td class={` col-span-2 py-4 pl-3`}>
+              <td className={` col-span-2 py-4 pl-3`}>
                 <span
                   className={` ${stClasses[status]} px-2 text-xs font-medium py-1 rounded-md`}
                 >

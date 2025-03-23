@@ -15,7 +15,7 @@ export const fetchUsers = createAsyncThunk(
       );
 
       //   if (!response.ok) throw new Error("Failed to fetch user data");
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);

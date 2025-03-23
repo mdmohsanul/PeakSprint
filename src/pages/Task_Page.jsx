@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Task_Page_List from "../components/Task/Task_Page_List";
+import Task_Page_Filters from "../components/Task/Task_Page_Filters";
+import Task_Page_Lists from "../components/Task/Task_Page_Lists";
 import { fetchTask } from "../features/taskSlice";
 import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
 
@@ -19,18 +20,16 @@ const Task_Page = () => {
       </div>
     );
   if (status === "failed")
-    return <p className="page-container">Error: {error}</p>;
+    return <div className="page-container">Error: {error}</div>;
   return (
     <>
       <div className="page-container">
         <h1 className="text-3xl font-medium">Tasks</h1>
         {/* Filters for tasks */}
-
+        <Task_Page_Filters />
         {/* Display All tasks */}
         <div className="grid gap-3 my-5">
-          {tasks?.map((item) => (
-            <Task_Page_List task={item} key={item._id} />
-          ))}
+          <Task_Page_Lists />
         </div>
       </div>
     </>

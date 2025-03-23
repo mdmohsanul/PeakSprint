@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Add_Project_Btn from "../components/Project/Add_Project_Btn";
 import { fetchProjects } from "../features/projectSlice";
 import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
-import Dropdown_Select from "../Filter_Component/Dropdown_Select";
+import Dropdown_Select from "../components/Filter_Component/Dropdown_Select";
 import { statusOptions } from "../data/dashboard";
 
 const Project_Page = () => {
@@ -25,13 +25,13 @@ const Project_Page = () => {
       </div>
     );
   if (status === "failed")
-    return <p className="page-container">Error: {error}</p>;
+    return <div className="page-container">Error: {error}</div>;
   return (
     <>
       {status === "success" && (
         <div className="page-container">
-          <div className={`grid grid-cols-3 md:grid-cols-12 grid-rows-1`}>
-            <span className="flex flex-col md:flex-row justify-between md:col-span-4 col-span-1">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between">
               <h1 className="text-3xl text-gray-800 font-semibold inline-block md:pr-10 pb-5 md:pb-0 ">
                 Projects
               </h1>
@@ -41,11 +41,8 @@ const Project_Page = () => {
                 value={projectStatus}
                 setValue={setProjectStatus}
               />
-            </span>
-            <span className="md:col-span-6 col-span-1"></span>
-            <div className="md:col-span-2 col-span-1">
-              <Add_Project_Btn />
             </div>
+            <Add_Project_Btn />
           </div>
 
           <Project_List projectList={projectList} />

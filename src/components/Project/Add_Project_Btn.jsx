@@ -7,7 +7,7 @@ const Add_Project_Btn = () => {
   return (
     <>
       <button
-        className="text-white  w-full h-10 bg-blue-600 py-2 md:px-4 px-1 rounded-md cursor-pointer text-sm hover:bg-blue-800 transition-colors duration-300"
+        className="text-white  h-10 bg-blue-600 py-2 md:px-4 px-1 rounded-md cursor-pointer text-sm hover:bg-blue-800 transition-colors duration-300"
         onClick={() => setOpenModal(!openModal)}
       >
         + Add Project

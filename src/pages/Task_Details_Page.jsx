@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import useDate from "../hooks/useDate";
 import useOwners from "../hooks/useOwners";
@@ -37,6 +37,12 @@ const Task_Details_Page = () => {
   return (
     <>
       <div className="page-container">
+        <Link
+          to="/dashboard/tasks"
+          className="text-blue-600 font-medium hover:text-blue-800"
+        >
+          ← Back To Tasks
+        </Link>
         <div className="max-w-4xl mx-auto  overflow-hidden border border-gray-200 rounded-lg px-8 py-5">
           <h1 className="text-2xl font-bold text-gray-800 pb-5">
             {task?.name}

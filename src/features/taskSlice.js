@@ -70,10 +70,30 @@ const taskSlice = createSlice({
     status: "",
     error: null,
     addTaskErr: null,
+    priorityFilter: "",
+    dateFilter: "",
+    ownerName: "",
+    projectFilter: "",
+    teamFilter: "",
   },
   reducers: {
     clearError: (state, action) => {
       state.error = null;
+    },
+    setPriorityFilter: (state, action) => {
+      state.priorityFilter = action.payload;
+    },
+    setDateFilter: (state, action) => {
+      state.dateFilter = action.payload;
+    },
+    setOwnerName: (state, action) => {
+      state.ownerName = action.payload;
+    },
+    setProjectFilter: (state, action) => {
+      state.projectFilter = action.payload;
+    },
+    setTeamFilter: (state, action) => {
+      state.teamFilter = action.payload;
     },
   },
   extraReducers: (builders) => {
@@ -123,5 +143,12 @@ const taskSlice = createSlice({
         });
   },
 });
-export const { clearError } = taskSlice.actions;
+export const {
+  clearError,
+  setDateFilter,
+  setPriorityFilter,
+  setOwnerName,
+  setProjectFilter,
+  setTeamFilter,
+} = taskSlice.actions;
 export default taskSlice.reducer;

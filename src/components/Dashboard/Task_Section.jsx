@@ -5,7 +5,7 @@ import { statusOptions } from "../../data/dashboard";
 import { fetchTask } from "../../features/taskSlice";
 import Add_Task_Btn from "../Task/Add_Task_Btn";
 import Task_Card from "../Task/Task_Card";
-import Dropdown_Select from "../../Filter_Component/Dropdown_Select";
+import Dropdown_Select from "../Filter_Component/Dropdown_Select";
 import Dashboard_Shimmer from "../../Shimmer_UI/Dashboard_Shimmer";
 
 const Task_Section = () => {

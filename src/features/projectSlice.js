@@ -8,7 +8,7 @@ export const fetchProjects = createAsyncThunk(
     const response = await axios.get(
       "https://peak-sprint-backend.vercel.app/project"
     );
-    console.log(response.data);
+
     return response.data;
   }
 );
@@ -18,7 +18,7 @@ export const addProject = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/project`, data);
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(

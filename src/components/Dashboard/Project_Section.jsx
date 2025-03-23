@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { statusOptions } from "../../data/dashboard";
 import Project_List from "../Project/Project_List";
 import Add_Project_Btn from "../Project/Add_Project_Btn";
-import Dropdown_Select from "../../Filter_Component/Dropdown_Select";
+import Dropdown_Select from "../Filter_Component/Dropdown_Select";
 import Dashboard_Shimmer from "../../Shimmer_UI/Dashboard_Shimmer";
 
 const Project_Section = () => {

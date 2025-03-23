@@ -9,7 +9,6 @@ import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
 const Team_Page = () => {
   const dispatch = useDispatch();
   const { teams, status, error } = useSelector((state) => state.teams);
-  const { users } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(fetchTeams());
