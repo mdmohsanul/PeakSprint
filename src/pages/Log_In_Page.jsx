@@ -11,6 +11,7 @@ const Log_In_Page = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [err, setErr] = useState("");
+  const [isLoggingIn, setIsloggingIn] = useState(false);
   const [password, setShowPassword] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const [loginData, setLoginData] = useState({
@@ -33,12 +34,20 @@ const Log_In_Page = () => {
   // Get the 'from' location or default to the userprofile Page
   const from = location.state?.from?.pathname || "/dashboard";
   const handleLogin = () => {
-    dispatch(loggedInUser(loginData)).then((result) => {
-      if (result.payload) {
-        navigate(from, { replace: true });
-        // navigate("/dashboard");
-      }
-    });
+    setIsloggingIn(true);
+    try {
+      dispatch(loggedInUser(loginData)).then((result) => {
+        if (result?.error?.message === "Rejected") {
+          setErr(result.payload);
+        } else {
+          navigate(from, { replace: true });
+          // navigate("/dashboard");
+          setIsloggingIn(false);
+        }
+      });
+    } catch (error) {
+      setErr(error || "Failed to Log In. Please try again.");
+    }
   };
   return (
     <>
@@ -57,6 +66,12 @@ const Log_In_Page = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Sign in to your account
                 </h1>
+                {err && (
+                  <p className="bg-red-500 inline px-4">
+                    <span className="text-white pr-3">❌</span>
+                    {err}
+                  </p>
+                )}
                 <form
                   className="space-y-4 md:space-y-6"
                   action="#"
@@ -136,13 +151,16 @@ const Log_In_Page = () => {
                       Forgot password?
                     </a>
                   </div>
-                  {err && <p>{err}</p>}
+
                   <button
                     type="submit"
                     onClick={handleLogin}
-                    className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className={`w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+                    ${isLoggingIn ? "opacity-50 cursor-not-allowed" : ""}
+                    `}
+                    disabled={isLoggingIn}
                   >
-                    Sign in
+                    {isLoggingIn ? "Signing In...." : "Sign in"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Don't have an account yet?{" "}

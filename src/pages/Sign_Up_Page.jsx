@@ -15,7 +15,8 @@ const Sign_Up_Page = () => {
   const navigate = useNavigate();
   const [password, setShowPassword] = useState(false);
   const { token } = useSelector((state) => state.auth);
-
+  const [err, setErr] = useState("");
+  const [isSigninUp, setIsSigningUp] = useState(false);
   const {
     register,
     handleSubmit,
@@ -29,9 +30,21 @@ const Sign_Up_Page = () => {
     }
   }, []);
   const onSubmit = (data) => {
-    dispatch(signupUser(data));
+    setIsSigningUp(true);
+    try {
+      dispatch(signupUser(data)).then((result) => {
+        if (result?.error?.message === "Rejected") {
+          setErr(result.payload);
+        } else {
+          setIsSigningUp(false);
+          navigate("/");
+        }
+      });
+    } catch (error) {
+      setErr(error || "Failed to Signing Up. Please try again.");
+    }
   };
-  console.log(watch("email")); // watch input value by passing the name of it
+  //console.log(watch("email")); // watch input value by passing the name of it
   return (
     <>
       <div className="w-full bg-white">
@@ -49,6 +62,12 @@ const Sign_Up_Page = () => {
                 <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                   Create an account
                 </h1>
+                {err && (
+                  <p className="bg-red-500 inline px-4">
+                    <span className="text-white pr-3">❌</span>
+                    {err}
+                  </p>
+                )}
                 <form
                   className="space-y-4 md:space-y-6"
                   action="#"
@@ -205,9 +224,12 @@ const Sign_Up_Page = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    disabled={isSigninUp}
+                    className={`w-full bg-blue-600 text-white cursor-pointer hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800
+                    ${isSigninUp ? "opacity-50 cursor-not-allowed" : ""}
+                    `}
                   >
-                    Create an account
+                    {isSigninUp ? "Signing Up..." : "Sign Up"}
                   </button>
                   <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                     Already have an account?{" "}

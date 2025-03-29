@@ -91,6 +91,10 @@ const appRouter = createBrowserRouter([
             element: <Task_Details_Page />,
           },
           {
+            path: "/dashboard/report",
+            element: <Report_Page />,
+          },
+          {
             path: "/dashboard/test",
             element: <Test />,
           },
