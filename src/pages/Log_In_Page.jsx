@@ -42,11 +42,12 @@ const Log_In_Page = () => {
         } else {
           navigate(from, { replace: true });
           // navigate("/dashboard");
-          setIsloggingIn(false);
         }
       });
     } catch (error) {
       setErr(error || "Failed to Log In. Please try again.");
+    } finally {
+      setIsloggingIn(false);
     }
   };
   return (

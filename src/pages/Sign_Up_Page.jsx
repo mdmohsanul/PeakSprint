@@ -36,12 +36,13 @@ const Sign_Up_Page = () => {
         if (result?.error?.message === "Rejected") {
           setErr(result.payload);
         } else {
-          setIsSigningUp(false);
           navigate("/");
         }
       });
     } catch (error) {
       setErr(error || "Failed to Signing Up. Please try again.");
+    } finally {
+      setIsSigningUp(false);
     }
   };
   //console.log(watch("email")); // watch input value by passing the name of it
