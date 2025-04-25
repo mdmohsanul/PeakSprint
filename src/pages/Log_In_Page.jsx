@@ -112,14 +112,22 @@ const Log_In_Page = () => {
                         onFocus={() => setErr("")}
                         value={loginData.password}
                         onChange={changeHandler}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault(); // Prevent Enter from triggering button click
+                            // Optionally you can submit the form here as well
+                            handleLogin; // Or you can rely on form submit (default behavior)
+                          }
+                        }}
                         className="bg-gray-50 border border-gray-300 text-gray-700 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required=""
                       />
                       <button
                         className="absolute top-3 right-5 cursor-pointer"
+                        tabIndex={-1}
                         onClick={(e) => {
-                          setShowPassword(!password);
                           e.stopPropagation();
+                          setShowPassword(!password);
                         }}
                       >
                         {password ? <FaRegEyeSlash /> : <IoEyeOutline />}
