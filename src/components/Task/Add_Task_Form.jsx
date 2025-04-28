@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,12 +16,13 @@ import {
   fetchTask,
   fetchTaskByProject,
 } from "../../features/taskSlice";
+import PropTypes from "prop-types";
 
 const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
   const dispatch = useDispatch();
   const [err, setErr] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  console.log(projectId);
   const [taskName, setTaskName] = useState("");
   const [team, setTeam] = useState("");
   const [project, setProject] = useState("");
@@ -44,7 +45,7 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
     setErr("");
     return true;
   };
-  const submitHandler = async (e) => {
+  const submitHandler = async () => {
     if (!validateForm()) return;
     const getOwnerIds = teamMember.map((item) => item._id);
     const data = {
@@ -58,7 +59,7 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
       priority: priority,
       dueDate: dueDate,
     };
-    console.log(data);
+
     try {
       setIsSubmitting(true);
       await dispatch(addTask(data)).unwrap();
@@ -188,6 +189,10 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
       </div>
     </>
   );
+};
+Add_Task_Form.propTypes = {
+  setOpenModal: PropTypes.Boolean,
+  projectId: PropTypes.string,
 };
 
 export default Add_Task_Form;

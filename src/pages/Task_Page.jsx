@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Task_Page_Filters from "../components/Task/Task_Page_Filters";
 import Task_Page_Lists from "../components/Task/Task_Page_Lists";
@@ -7,9 +7,8 @@ import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
 
 const Task_Page = () => {
   const dispatch = useDispatch();
-  const { tasks, status, error } = useSelector((state) => state.tasks);
+  const { status, error } = useSelector((state) => state.tasks);
 
-  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(fetchTask());
   }, [dispatch]);

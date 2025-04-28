@@ -1,4 +1,5 @@
-import React from "react";
+import PropTypes from "prop-types";
+
 import { Link } from "react-router";
 
 /* This component takes list of project and display all the project as a Card */
@@ -15,7 +16,7 @@ const Project_List = ({ projectList }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 my-5  place-self-center">
         {/* Project Card */}
         {projectList?.map((item) => (
-          <Link to={`/dashboard/projects/${item._id}`} key={item._id}>
+          <Link to={`/dashboard/projects/details/${item._id}`} key={item._id}>
             {" "}
             <div className="w-72 rounded-lg bg-gray-100 h-48  pt-8 px-6 cursor-pointer">
               <div className="flex flex-col  h-full gap-3">
@@ -40,5 +41,7 @@ const Project_List = ({ projectList }) => {
     </>
   );
 };
-
+Project_List.propTypes = {
+  projectList: PropTypes.array.isRequired,
+};
 export default Project_List;

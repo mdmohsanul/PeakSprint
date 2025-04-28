@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import useOwners from "../../hooks/useOwners";
 import { CiFlag1 } from "react-icons/ci";
 import useDate from "../../hooks/useDate";
@@ -14,10 +14,9 @@ const Task_Page_Lists = () => {
   );
   //  Filters -- used a customHook
   const { taskList } = useFilterTasks(tasks);
-  console.log(taskList);
 
   const [lists, setLists] = useState(taskList);
-  console.log(lists);
+
   useEffect(() => {
     let filteredList = taskList;
     if (ownerName) {

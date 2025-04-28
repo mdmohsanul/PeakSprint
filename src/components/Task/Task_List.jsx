@@ -1,4 +1,3 @@
-import React from "react";
 import useDate from "../../hooks/useDate";
 import useOwners from "../../hooks/useOwners";
 import { CiFlag1 } from "react-icons/ci";

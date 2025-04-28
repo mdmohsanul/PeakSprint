@@ -1,11 +1,11 @@
-import React from "react";
 import { format, parseISO } from "date-fns";
 import useOwners from "../../hooks/useOwners";
 import { Link } from "react-router";
+import PropTypes from "prop-types";
 
 // This Task_Card component is displayed on dasboard page
 
-const Task_Card = ({ data, idx }) => {
+const Task_Card = ({ data }) => {
   function convertDate(dueDate) {
     const isoDate = dueDate;
     const date = parseISO(isoDate);
@@ -53,5 +53,7 @@ const Task_Card = ({ data, idx }) => {
     </>
   );
 };
-
+Task_Card.propTypes = {
+  data: PropTypes.object,
+};
 export default Task_Card;

@@ -14,7 +14,7 @@ const useFilterTasks = (projectTask) => {
     return new Date(cleanDate);
   };
   let priorityMap = { High: 1, Medium: 2, Low: 3 };
-  console.log(dateFilter);
+
   useEffect(() => {
     let filteredTasks = taskList;
     if (priorityFilter === "High") {

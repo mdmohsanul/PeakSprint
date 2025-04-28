@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Add_Task_Form from "./Add_Task_Form";
+import PropTypes from "prop-types";
 
 const Add_Task_Btn = ({ projectId }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -22,4 +23,7 @@ const Add_Task_Btn = ({ projectId }) => {
   );
 };
 
+Add_Task_Btn.propTypes = {
+  projectId: PropTypes.string.isRequired, // (optional: .isRequired if needed)
+};
 export default Add_Task_Btn;

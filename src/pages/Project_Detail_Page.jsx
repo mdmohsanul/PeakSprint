@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import Project_Details_Filters from "../components/Project/Project_Details_Filters";
 import Add_Task_Btn from "../components/Task/Add_Task_Btn";
 import Task_List from "../components/Task/Task_List";
-import { statusOptions } from "../data/dashboard";
+
 import { fetchProjects } from "../features/projectSlice";
 import { fetchTaskByProject } from "../features/taskSlice";
 import Dashboard_Shimmer from "../Shimmer_UI/Dashboard_Shimmer";
+import { fetchTeams } from "../features/teamSlice";
+import { fetchUsers } from "../features/userSlice";
 
 const Project_Detail_Page = () => {
   const { projectId } = useParams();
@@ -16,12 +18,14 @@ const Project_Detail_Page = () => {
   const { projectTask, status, error } = useSelector((state) => state.tasks);
   const { projects } = useSelector((state) => state.projects);
   const findProject = projects?.find((project) => project?._id === projectId);
-
+  console.log(projectTask);
   useEffect(() => {
     dispatch(fetchTaskByProject(projectId));
     dispatch(fetchProjects());
+    dispatch(fetchTeams());
+    dispatch(fetchUsers());
   }, [dispatch, projectId]);
-
+  console.log("Project_Detail_Page");
   if (status === "loading")
     return (
       <div className="page-container">

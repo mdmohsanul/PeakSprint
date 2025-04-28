@@ -75,7 +75,7 @@ const appRouter = createBrowserRouter([
             element: <Project_Page />,
           },
           {
-            path: "/dashboard/projects/:projectId",
+            path: "/dashboard/projects/details/:projectId",
             element: <Project_Detail_Page />,
           },
           {

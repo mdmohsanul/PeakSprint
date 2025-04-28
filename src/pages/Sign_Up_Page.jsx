@@ -30,6 +30,7 @@ const Sign_Up_Page = () => {
     }
   }, []);
   const onSubmit = (data) => {
+    console.log(data);
     setIsSigningUp(true);
     try {
       dispatch(signupUser(data)).then((result) => {
@@ -171,10 +172,11 @@ const Sign_Up_Page = () => {
                         </div>
                       )}
                       <button
+                        type="button"
                         className="absolute top-3 right-5"
                         onClick={(e) => {
-                          setShowPassword(!password);
                           e.stopPropagation();
+                          setShowPassword(!password);
                         }}
                       >
                         {password ? <FaRegEyeSlash /> : <IoEyeOutline />}
