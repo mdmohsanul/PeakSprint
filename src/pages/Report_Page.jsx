@@ -49,6 +49,7 @@ const Report_Page = () => {
       },
     ],
   };
+  console.log(closedTasksLastWeek.labels.length);
   const getPendingTasksDays = pendingTasks?.reduce(
     (sum, curr) => sum + curr.timeToComplete,
     0
@@ -65,6 +66,7 @@ const Report_Page = () => {
       },
     ],
   };
+  console.log(pendingTaskDaysChart);
   const pendingTaskDaysOptions = {
     datasets: {
       bar: {
@@ -135,10 +137,16 @@ const Report_Page = () => {
               <p className="text-center text-2xl text-gray-800">
                 Tasks Closed Last Week
               </p>
-              <Pie
-                data={closedTasksLastWeek}
-                style={{ width: "480px", height: "500px" }}
-              />
+              {closedTasksLastWeek?.labels?.length <= 0 ? (
+                <p className="flex items-center justify-center pt-10 text-xl">
+                  No tasks closed in last seven days
+                </p>
+              ) : (
+                <Pie
+                  data={closedTasksLastWeek}
+                  style={{ width: "480px", height: "500px" }}
+                />
+              )}
             </div>
 
             <div>
