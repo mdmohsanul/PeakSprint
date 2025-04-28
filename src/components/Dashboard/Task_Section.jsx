@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { statusOptions } from "../../data/dashboard";
@@ -16,7 +16,7 @@ const Task_Section = () => {
   useEffect(() => {
     dispatch(fetchTask());
   }, [dispatch]);
-  console.log(tasks);
+
   if (status === "loading") return <Dashboard_Shimmer />;
   if (status === "failed") return <p>Error: {error}</p>;
   return (

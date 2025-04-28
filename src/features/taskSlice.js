@@ -21,7 +21,7 @@ export const fetchTaskByProject = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/task/${id}`);
-
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -51,7 +51,7 @@ export const addTask = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/task/`, data);
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(

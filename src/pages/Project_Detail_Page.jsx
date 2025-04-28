@@ -15,10 +15,10 @@ const Project_Detail_Page = () => {
   const { projectId } = useParams();
 
   const dispatch = useDispatch();
-  const { projectTask, status, error } = useSelector((state) => state.tasks);
+  const { status, error } = useSelector((state) => state.tasks);
   const { projects } = useSelector((state) => state.projects);
   const findProject = projects?.find((project) => project?._id === projectId);
-  console.log(projectTask);
+
   useEffect(() => {
     dispatch(fetchTaskByProject(projectId));
     dispatch(fetchProjects());
@@ -49,7 +49,7 @@ const Project_Detail_Page = () => {
             <Add_Task_Btn projectId={projectId} />
           </div>
           {/* Task Lists */}
-          <Task_List />
+          <Task_List projectId={projectId} />
         </div>
       )}
     </>

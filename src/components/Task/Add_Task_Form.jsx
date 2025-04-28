@@ -22,7 +22,7 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
   const dispatch = useDispatch();
   const [err, setErr] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  console.log(projectId);
+
   const [taskName, setTaskName] = useState("");
   const [team, setTeam] = useState("");
   const [project, setProject] = useState("");
@@ -63,8 +63,8 @@ const Add_Task_Form = ({ setOpenModal, projectId = null }) => {
     try {
       setIsSubmitting(true);
       await dispatch(addTask(data)).unwrap();
+      projectId && (await dispatch(fetchTaskByProject(projectId)).unwrap());
       dispatch(fetchTask());
-      projectId && dispatch(fetchTaskByProject(projectId));
       dispatch(clearError());
       setOpenModal(false); // Close modal after success
     } catch (error) {

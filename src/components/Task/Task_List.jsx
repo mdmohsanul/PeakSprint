@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 const Task_List = () => {
   const { projectTask } = useSelector((state) => state.tasks);
+
   //  Filters -- used a customHook
   const { taskList } = useFilterTasks(projectTask);
   // custom hook to extract username
@@ -38,36 +39,41 @@ const Task_List = () => {
             <th className="col-span-2 pl-3">STATUS</th>
           </tr>
         </thead>
-        {taskList?.map(({ name, owners, dueDate, priority, status, _id }) => (
-          <tbody key={_id}>
-            <tr className="grid grid-cols-12   place-content-center border border-gray-300 items-center">
-              <td className="  border-r border-gray-300 col-span-4 py-4 pl-5 font-semibold text-gray-900">
-                {name}
-              </td>
-              <td className="border-r border-gray-300 col-span-2 py-2 pl-6 flex">
-                {getOwner(owners)}
-              </td>
-              <td className={`border-r border-gray-300 col-span-2 py-4 pl-3 `}>
-                <span
-                  className={`${prClasses[priority]} px-2 text-xs font-medium py-1 rounded-md flex items-center gap-3 w-24 `}
+        {taskList?.map((item) => {
+          const { name, owners, priority, status, dueDate } = item;
+          return (
+            <tbody key={item._id}>
+              <tr className="grid grid-cols-12   place-content-center border border-gray-300 items-center">
+                <td className="  border-r border-gray-300 col-span-4 py-4 pl-5 font-semibold text-gray-900">
+                  {name}
+                </td>
+                <td className="border-r border-gray-300 col-span-2 py-2 pl-6 flex">
+                  {getOwner(owners)}
+                </td>
+                <td
+                  className={`border-r border-gray-300 col-span-2 py-4 pl-3 `}
                 >
-                  <CiFlag1 /> {priority}
-                </span>
-              </td>
-              <td className="border-r border-gray-300 col-span-2 py-[18px] pl-3 text-sm font-semibold text-gray-800">
-                {extractedDate(dueDate)}
-              </td>
+                  <span
+                    className={`${prClasses[priority]} px-2 text-xs font-medium py-1 rounded-md flex items-center gap-3 w-24 `}
+                  >
+                    <CiFlag1 /> {priority}
+                  </span>
+                </td>
+                <td className="border-r border-gray-300 col-span-2 py-[18px] pl-3 text-sm font-semibold text-gray-800">
+                  {extractedDate(dueDate)}
+                </td>
 
-              <td className={` col-span-2 py-4 pl-3`}>
-                <span
-                  className={` ${stClasses[status]} px-2 text-xs font-medium py-1 rounded-md`}
-                >
-                  {status}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        ))}
+                <td className={` col-span-2 py-4 pl-3`}>
+                  <span
+                    className={` ${stClasses[status]} px-2 text-xs font-medium py-1 rounded-md`}
+                  >
+                    {status}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          );
+        })}
       </table>
     </>
   );
