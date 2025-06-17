@@ -1,7 +1,7 @@
 // src/redux/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Navigate } from "react-router";
+
 
 // Async thunk for signup
 export const signupUser = createAsyncThunk(
