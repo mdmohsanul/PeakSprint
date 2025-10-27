@@ -1,14 +1,21 @@
 
 
 
-interface ButtonProps{
-    onClick : () => void
+interface ButtonProps {
+  onClick?: () => void;
 }
-export const Button = (props:ButtonProps) => {
-    const {onClick} = props
-  return <>
-     <button onClick={onClick} data-testid="button-test"></button>
-  </>
+export const Button = (props: ButtonProps) => {
+  const { onClick } = props;
+  const handler = () => {
+    console.log("handler");
+  };
+  if (!onClick)
+    return <button onClick={handler} data-testid="button-test"></button>;
+  return (
+    <>
+      <button onClick={onClick} data-testid="button-test"></button>
+    </>
+  );
 };
 
 
