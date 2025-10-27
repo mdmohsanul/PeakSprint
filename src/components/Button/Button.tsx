@@ -1,16 +1,15 @@
 
 
 
-interface ButtonProps{
-    onClick : () => void
+interface ButtonProps {
+  onClick: () => void;
 }
-export const Button = (props:ButtonProps) => {
-    const {onClick} = props
+export const Button = (props: ButtonProps) => {
+  const { onClick } = props;
+
   return (
     <>
-      <button onClick={onClick} data-testid="button-test">
-        Click Me
-      </button>
+      <button onClick={onClick} data-testid="button-test"></button>
     </>
   );
 };
